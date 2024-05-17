@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Channel quotation tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .background-box {
+            width: 180px;
+            height: 245px;
+            background-color: #fffaf0;
+            border: 1px solid #d5d5d9;
+            padding: 32px;
+            margin-top: -325px;
+            margin-left: 545px;
+            max-width: 160px;
+        }
+        .container {
+            max-width: 800px;
+            height: 850px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .column {
+            margin-top: 10px;
+            width: 0 auto;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 3px;
+        }
+        input[type="text"] {
+            width: 200px;
+            margin: 5px;
+            height:30px;
+        }
+        button {
+            padding: 10px 30px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #最终折后价 {
+            margin-top: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            color: brown;
+            margin-right: 5px;
+        }
+
+        #补充次数 {
+            margin-top: -150px;
+            margin-left: 600px;
+        }
+
+        #定制区域 {
+            margin-right: 300px;
+        }
+
+        #平台区域2 {
+            margin-right: 60px;
+        }
+
+        #功能区域1 {
+            margin-right: 300px;
+        }
+        #折扣方式 {
+            margin-top: 30px;
+            margin-right: 80px;
+        }
+
+        #输出区域 {
+            margin-top: -395px;
+            margin-left: 565px;
+            max-width: 200px;
+        }
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <div id="title" style="margin-top:-35px">
+               <div style="height:20px; font-size: 20px;font-weight:bold;"><h2>Channel quotation tool</h2></div>
+               <div style="color: dimgray;font-weight:100;height:20px;"><h5>此工具仅作为报价核算使用,如有问题欢迎随时联系开发人员:li.quan@nint.com，版本1.0</h5></div>
+            </div>
+       </div>
+        <div class="row">
+            <div class="column">
+              <div id="购买方式">
+                 <label for="input11">购买月数: </label><input type="text" id="input11" placeholder="购买月数" pattern="[0-9]*" inputmode="numeric" value="12">
+                 <label for="input12">购买频次: </label><input type="text" id="input12" placeholder="购买频次" pattern="[0-9]*" inputmode="numeric"value="1">
+              </div>
+            </div>
+            <div class="column">
+                  <div id="折扣方式">
+                     <label><input type="radio" id="radio1" name="discount" value="1" checked> 无折扣</label>
+                     <label><input type="radio" id="radio2" name="discount" value="0.9"> 新客（9折）</label>
+                     <label><input type="radio" id="radio3" name="discount" value="0.8"> 续约（8折）</label>
+                  </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <div id="平台区域1">
+                    <label><input type="checkbox" id="checkbox1" value="300" checked> 天猫</label>
+                    <label><input type="checkbox" id="checkbox2" value="300" checked> 淘宝</label>
+                    <label><input type="checkbox" id="checkbox3" value="300" checked> 京东</label>
+                    <label><input type="checkbox" id="checkbox4" value="1500"> 拼多多</label>
+                    <label><input type="checkbox" id="checkbox5" value="1500"> 抖音小店</label>
+                    <label><input type="checkbox" id="checkbox6" value="1500"> 唯品会</label>
+                </div>
+            </div>
+            <div class="column">
+                <div id="平台区域2">
+                    <label><input type="checkbox" id="checkbox7" value="1500"> 考拉</label>
+                    <label><input type="checkbox" id="checkbox8" value="300"> 苏宁</label>
+                    <label><input type="checkbox" id="checkbox9" value="1500"> 途虎</label>
+                    <label><input type="checkbox" id="checkbox10" value="1500"> 得物</label>
+                    <label><input type="checkbox" id="checkbox11" value="1500"> 快手</label>
+                    <label><input type="checkbox" id="checkbox12" value="1500"> 其他</label>
+                </div>
+            </div>
+            <div class="column">
+                <div id="功能区域1">
+                    <label><input type="checkbox" id="checkbox13" value="13" checked> 促销采集</label>
+                    <label><input type="checkbox" id="checkbox14" value="14"> 高级报表（套餐内）</label>
+                    <label><input type="checkbox" id="checkbox15" value="15" checked> 基础报表（套餐内）</label>
+                    <label><input type="checkbox" id="checkbox16" value="16" checked> 截图功能（套餐内）</label>
+                    <label><input type="checkbox" id="checkbox17" value="17" checked> 更新维护</label>
+                </div>               
+            </div>             
+                <div id="补充次数">
+                    <label><input type="checkbox" id="checkbox18" value="300" > 补充频率（30）</label>
+                    <label><input type="checkbox" id="checkbox19" value="300" > 补充频率（100）</label>
+                </div>                     
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <div id="数量区域" style="margin-left: 10px;">
+                    <label for="input1">普通Url数量（套餐内）: </label><input type="text" id="input1" placeholder="请输入购买数量" pattern="[0-9]*" inputmode="numeric">
+                    <label for="input2">特殊url数量（套餐内）: </label><input type="text" id="input2" placeholder="请输入购买数量" pattern="[0-9]*" inputmode="numeric">
+                    <label for="input3">产品入库量: </label><input type="text" id="input3" placeholder="请输入购买数量" pattern="[0-9]*" inputmode="numeric">
+                    <label for="input4">图片识别: </label><input type="text" id="input4" placeholder="请输入购买数量" pattern="[0-9]*" inputmode="numeric">
+                    <label for="input10">销量功能: </label><input type="text" id="input5" placeholder="请输入购买数量" pattern="[0-9]*" inputmode="numeric">
+                </div>
+            </div>
+
+            <div class="column">
+                  <div id="定制区域">
+                      <label for="input1">定制报告: </label><input type="text" id="input6" placeholder="请输入购买金额" pattern="[0-9]*" inputmode="numeric">
+                      <label for="input2">数据接口: </label><input type="text" id="input7" placeholder="请输入购买金额" pattern="[0-9]*" inputmode="numeric">
+                      <label for="input4">其他定制1: </label><input type="text" id="input8" placeholder="请输入购买金额" pattern="[0-9]*" inputmode="numeric">
+                      <label for="input5">其他定制2: </label><input type="text" id="input9" placeholder="请输入购买金额" pattern="[0-9]*" inputmode="numeric">
+                      <label for="input10">其他定制3: </label><input type="text" id="input10" placeholder="请输入购买金额" pattern="[0-9]*" inputmode="numeric">
+                  </div>
+              </div>
+            <div style="margin-top: -350px;;margin-left: 548px;">计算输出区域:</div>
+            <div class="background-box" id="矩形">
+               
+            </div>
+        </div>
+
+        <div id="按钮组" style="margin-left: 75%;">
+            <button onclick="clearValues()">清除</button>
+            <button onclick="calculateTotal()">计算</button>
+        </div>
+        <a href="https://channel.ecdataway.com/site/priceList" style="margin-top: 10px;" target="_blank">报价官网</a>
+        <div class="column">
+            <div id="输出区域">
+                <div style=font-weight:bold;><p id="总价"></p></div>
+                <p id="套餐情况"></p>
+                <p id="套餐价"></p>
+                <p id="最终折后价"></p>
+                <p style="font-size: 12px;color: rgb(105, 102, 102);" id="明细"></p>
+            </div>
+        </div>        
+    </div>
+    
+    <script>
+        function clearValues() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var inputs = document.querySelectorAll('input[type="text"]');
+
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+
+            inputs.forEach(function(input) {
+                input.value = '';
+            });
+
+            document.getElementById('result').innerText = '';
+        }
+
+        function calculateTotal() {
+            var total1 = 0;
+            var total2 = 0;
+            var total3 = 0;
+            var monthly_quantity = document.getElementById("input11").value;
+            var frequency = document.getElementById("input12").value;
+            var 普通Url费用 = parseInt(document.getElementById('input1').value * 2 * monthly_quantity * frequency) || 0;
+            var 特殊url费用 = parseInt(document.getElementById('input2').value * 4 * monthly_quantity * frequency) || 0;
+            var 产品入库费用 = parseInt(document.getElementById('input3').value * 3) || 0;
+            var 图片识别 = parseInt(document.getElementById('input4').value * monthly_quantity * frequency) || 0;
+            var 销量功能费用 = parseInt(document.getElementById('input5').value * 2 * monthly_quantity) || 0;
+            var 定制报告费用 = parseInt(document.getElementById('input6').value) || 0;
+            var 数据接口费用 = parseInt(document.getElementById('input7').value) || 0;
+            var 其他定制1费用 = parseInt(document.getElementById('input8').value) || 0;
+            var 其他定制2费用 = parseInt(document.getElementById('input9').value) || 0;
+            var 其他定制3费用 = parseInt(document.getElementById('input10').value) || 0;
+            var 折扣状态 = 0;
+                if(document.getElementById('radio1').checked){
+                折扣状态+= 1;
+                }
+                if(document.getElementById('radio2').checked){
+                折扣状态+= 0.9;
+                }
+                if(document.getElementById('radio3').checked){
+                折扣状态+= 0.8;
+                }
+            var 促销费用 = 0;
+                if(document.getElementById('checkbox13').checked){
+                促销费用+=(普通Url费用 + 特殊url费用) * 0.5;
+                }
+            var 高级报表 = 0;
+                if(document.getElementById('checkbox14').checked){
+                高级报表+=(普通Url费用 + 特殊url费用) * 0.5;
+                }
+            var 截图功能 = 0;
+                if(document.getElementById('checkbox16').checked){
+                截图功能+=(普通Url费用 + 特殊url费用) * 0.5;
+                }
+            var 基础报表 = 0;
+                if(document.getElementById('checkbox15').checked){
+                基础报表+=(普通Url费用 + 特殊url费用) * 0.3;
+                }
+            var 更新维护 = 0;
+                if(document.getElementById('checkbox17').checked){
+                更新维护+=(普通Url费用 + 特殊url费用) * 0.5 / frequency ;
+                }
+                var 补充频率 = 0;
+                if(document.getElementById('checkbox18').checked){
+                补充频率+=(普通Url费用 + 特殊url费用) * 0.1 / frequency ;
+                }
+                if(document.getElementById('checkbox19').checked){
+                补充频率+=(普通Url费用 + 特殊url费用) * 0.3 / frequency ;
+                }
+
+            var 平台费用 = 0;
+                if(document.getElementById('checkbox1').checked){
+                平台费用+=300*monthly_quantity;
+                }
+                if(document.getElementById('checkbox2').checked){
+                平台费用+=300*monthly_quantity;
+                }
+                if(document.getElementById('checkbox3').checked){
+                平台费用+=300*monthly_quantity;
+                }
+
+                if(document.getElementById('checkbox4').checked){
+                平台费用+=1500*monthly_quantity;;
+                }
+                if(document.getElementById('checkbox5').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+                if(document.getElementById('checkbox6').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+                if(document.getElementById('checkbox7').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+                if(document.getElementById('checkbox8').checked){
+                平台费用+=300*monthly_quantity;
+                }
+                if(document.getElementById('checkbox9').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+                if(document.getElementById('checkbox10').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+                if(document.getElementById('checkbox11').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+                if(document.getElementById('checkbox12').checked){
+                平台费用+=1500*monthly_quantity;
+                }
+
+            total1 += 普通Url费用 + 特殊url费用 + 产品入库费用 + 销量功能费用 + 定制报告费用 + 数据接口费用 + 其他定制1费用
+            total1 += 其他定制2费用 + 其他定制3费用 + 促销费用 + 高级报表 + 截图功能 + 基础报表 + 更新维护 + 平台费用 + 图片识别 + 补充频率
+
+
+            total2 = 普通Url费用 + 特殊url费用 + 高级报表 + 截图功能 + 基础报表 + 平台费用
+            total3 = total1 - total2
+
+            套餐原价 = 0;
+            套餐价 = 0;
+                var objects = [
+                    {value: 0, output1: 0, output2: 0},
+                    {value: 46800, output1: 46800, output2: 41500},
+                    {value: 58300, output1: 63600, output2: 53000},
+                    {value: 115600, output1: 133200, output2: 105000},
+                    {value: 184200, output1: 212400, output2: 156000},
+                    {value: 276400, output1: 322800, output2: 220000},
+                    {value: 420800, output1: 500400, output2: 318000},
+                    {value: 615400, output1: 745200, output2: 433000}
+                ];
+                var compareValue = total2;
+                var result;
+
+                for (var i = 0; i < objects.length; i++) {
+                    if (compareValue >= objects[i].value) {
+                        result = objects[i];
+                    }
+                }
+
+                套餐原价 += result.output1
+                套餐价 += result.output2
+            if (total2 > 套餐原价) {
+            套餐折后价=total2-套餐原价+套餐价
+            } else {
+            套餐折后价=套餐价
+            }
+
+            total4= 套餐折后价 + total3
+            total5= 套餐折后价 * 折扣状态 + total3
+
+            document.getElementById('总价').innerText = '总价: ¥' + total1.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});//加入千位符，并保留2为小数 
+            document.getElementById('套餐情况').innerText = '套餐: ' + 套餐原价.toLocaleString() +" → " +套餐价.toLocaleString();//加入千位符 
+            document.getElementById('套餐价').innerText = '套餐价: ¥' + total4.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});//加入千位符，并保留2为小数 
+            document.getElementById('最终折后价').innerText = '最终折后价: ¥' + total5.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});//加入千位符，并保留2为小数 
+            document.getElementById('明细').innerText = 'list { url:' + 普通Url费用 + "+" + 特殊url费用 + ";   平台:" +  平台费用+  ";   入库:" +  产品入库费用 +";   报表:" +  定制报告费用 + ";   接口:" +  数据接口费用 + ";   促销:" +  促销费用 + ";   截图:" +  截图功能 + ";   基础报表:" +  基础报表 + ";   维护:" +  更新维护 + ";   高级报表:" +  高级报表 +";   图片识别:" +  图片识别+ ";   补充频率:" +  补充频率+ ";   销量:" +  销量功能费用 + ";   定制:" +  其他定制1费用 + "+" +  其他定制2费用 + "+" +  其他定制3费用 +  "}";
+        }
+    </script>
+</body>
+</html>
+<!-- .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) 加入千位符，并保留2为小数 -->
