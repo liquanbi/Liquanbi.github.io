@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>登录页面</title>
+    <title>Power Bi Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
+            background: linear-gradient(to right, #f1f1f1 30%, #003366 30%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,7 +18,8 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 15%;
+            margin-right: 70%;
         }
 
         input[type="text"],
@@ -46,11 +47,12 @@
             color: red;
             display: none;
         }
+
     </style>
 </head>
+
 <body>
     <form onsubmit="return validateForm()">
-        <h2 style="text-align: center;">Power bi login entry</h2>
         <label for="username">username:</label>
         <input type="text" id="username" name="username" required>
         <br>
@@ -58,14 +60,16 @@
         <input type="password" id="password" name="password" required>
         <br>
         <input type="submit" value="登录">
-        <p class="error">用户名或密码错误，请重新输入。</p>
+        <p class="error">User name or password is incorrect, please re-enter.</p>
     </form>
 
     <script>
         function validateForm() {
             var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            if (username === "li.quan" && password === "Nint1234") {
+            var password = encryptPassword(document.getElementById("password").value);
+
+            if (username === "admin" && password === "63d3590820474882f78165a58ca01b4c") {
+                localStorage.setItem("username", username); 
                 window.location.replace("power bi.html");
                 return false;
             } else {
@@ -73,6 +77,11 @@
                 return false;
             }
         }
+
+        function encryptPassword(password) {
+            return md5(password);
+        }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
 </body>
 </html>
