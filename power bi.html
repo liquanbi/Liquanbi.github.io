@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Suntory bi</title>
+    <title>Power BI</title>
+    <script>
+        // 检查用户是否已登录，如果未登录则重定向到登录页面
+        function checkLogin() {
+            var username = localStorage.getItem("username");
+            if (!username) {
+                window.location.replace("登录页面.html");
+            }
+        }
+    </script>
+</head>
+<title>power bi</title>
     <style>
         body {
             margin: 0;
@@ -18,7 +29,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="checkLogin()">
     <iframe title="beam_suntory" src="https://app.powerbi.com/view?r=eyJrIjoiYTQ1ZWM2NDItNGM0Mi00MTY5LWFiZjUtMTNjZTljYWIzZDc1IiwidCI6IjE3MDA3Yzk5LWUzMzMtNGZlMS1iZWNmLThkYTRjMDI0NWQ2YiIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
 </body>
 </html>
