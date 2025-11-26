@@ -563,7 +563,18 @@
         // 更新状态显示
         async function updateStatus() {
             try {
-                const response = await fetch(`${SERVER_URL}/status`);
+                const response = await fetch(`${SERVER_URL}/status`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 const statusIndicator = document.querySelector('.status-indicator');
@@ -608,6 +619,12 @@
                 }
             } catch (error) {
                 console.error('获取状态失败:', error);
+                const statusText = document.getElementById('statusText');
+                if (statusText) {
+                    statusText.textContent = '连接失败';
+                    statusText.style.color = '#dc3545';
+                }
+                addLogEntry('error', `无法连接到服务器: ${error.message}`);
             }
         }
 
@@ -659,6 +676,28 @@
             }
         }
 
+        // 测试服务器连接
+        async function testServerConnection() {
+            try {
+                const response = await fetch(`${SERVER_URL}/status`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return { success: true, data };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
         // 加载日志
         async function loadLogs() {
             // 如果日志已被清除，则不再从服务器加载
@@ -667,7 +706,18 @@
             }
 
             try {
-                const response = await fetch(`${SERVER_URL}/logs`);
+                const response = await fetch(`${SERVER_URL}/logs`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 const logsPanel = document.getElementById('logsPanel');
@@ -850,15 +900,67 @@
             }, 1000);
         }
 
+        // 初始化连接状态
+        let isServerConnected = false;
+        
+        // 检查并初始化服务器连接
+        async function initializeConnection() {
+            const connectionResult = await testServerConnection();
+            
+            if (connectionResult.success) {
+                isServerConnected = true;
+                const statusText = document.getElementById('statusText');
+                if (statusText) {
+                    statusText.textContent = '空闲';
+                    statusText.style.color = '';
+                }
+                addLogEntry('success', '服务器连接成功');
+                
+                // 初始化正常功能
+                initTaskList();
+                updateStatus();
+                loadLogs();
+                
+                // 每5秒自动更新状态
+                setInterval(updateStatus, 5000);
+            } else {
+                isServerConnected = false;
+                const statusText = document.getElementById('statusText');
+                if (statusText) {
+                    statusText.textContent = '服务器离线';
+                    statusText.style.color = '#dc3545';
+                }
+                addLogEntry('error', `服务器连接失败: ${connectionResult.error}`);
+                
+                // 显示基本的任务列表，但禁用所有按钮
+                initTaskList();
+                Object.values(SCRIPTS).forEach(script => {
+                    const button = document.getElementById(script.buttonId);
+                    if (button) {
+                        button.disabled = true;
+                        button.className = 'task-button error';
+                        button.textContent = '服务器离线';
+                    }
+                });
+                
+                // 添加重试按钮到状态面板
+                const statusPanel = document.querySelector('.status-panel');
+                if (statusPanel && !document.getElementById('retryButton')) {
+                    const retryButton = document.createElement('button');
+                    retryButton.id = 'retryButton';
+                    retryButton.className = 'task-button';
+                    retryButton.textContent = '重试连接';
+                    retryButton.style.marginLeft = '10px';
+                    retryButton.onclick = initializeConnection;
+                    statusPanel.querySelector('#statusDisplay').appendChild(retryButton);
+                }
+            }
+        }
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
-            initTaskList();
-            updateStatus();
-            loadLogs();
-            // 每5秒自动更新状态
-            setInterval(updateStatus, 5000);
+            initializeConnection();
         });
     </script>
 </body>
 </html>
-
