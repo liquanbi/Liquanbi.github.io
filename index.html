@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python脚本执行控制面板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-size: 13px;
+            width: 100%;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            height: calc(100vh - 40px);
+        }
+        
+        /* 左侧任务列表区域 */
+        .task-panel {
+            flex: 0 0 70%;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .status-panel {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .status-idle {
+            background: #6c757d;
+        }
+        
+        .status-running {
+            background: #28a745;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .task-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .task-button {
+            flex: 0 0 100px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+        
+        .task-button:hover:not(:disabled) {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+        
+        .task-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .task-button.running {
+            background: #28a745;
+        }
+        
+        .task-button.error {
+            background: #dc3545;
+        }
+        
+        .task-info {
+            flex: 1;
+        }
+        
+        .task-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 3px;
+            font-size: 13px;
+        }
+        
+        .task-description {
+            color: #6c757d;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        
+        /* 右侧日志区域 */
+        .log-panel {
+            flex: 0 0 30%;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .log-header h3 {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .log-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .refresh-button, .clear-button {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .refresh-button:hover {
+            background: #138496;
+        }
+        
+        .clear-button {
+            background: #dc3545;
+        }
+        
+        .clear-button:hover {
+            background: #c82333;
+        }
+        
+        .logs-container {
+            flex: 1;
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+        
+        .log-entry {
+            margin-bottom: 2px;
+            padding: 2px 4px 2px 10px;
+            border-left: 2px solid transparent;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            text-align: left;
+            position: relative;
+            line-height: 1.2;
+            min-height: auto;
+        }
+        
+        .log-entry.expandable {
+            cursor: pointer;
+        }
+        
+        .log-entry.expandable:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .log-entry.expandable::before {
+            content: '▶';
+            position: absolute;
+            left: 1px;
+            color: #888;
+            font-size: 8px;
+            transition: transform 0.2s;
+            top: 3px;
+        }
+        
+        .log-entry.expanded::before {
+            transform: rotate(90deg);
+        }
+        
+        .log-details {
+            margin-top: 2px;
+            padding-left: 12px;
+            border-left: 1px solid #444;
+            display: none;
+        }
+        
+        .log-entry.expanded .log-details {
+            display: block;
+        }
+        
+        .log-detail-line {
+            margin: 1px 0;
+            padding: 0 2px;
+            font-size: 9px;
+            color: #aaa;
+            word-break: break-all;
+            white-space: pre-wrap;
+            text-align: left;
+            line-height: 1.1;
+        }
+        
+        .timestamp {
+            color: #888;
+            margin-right: 6px;
+            font-size: 9px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        
+        .log-entry > span:last-child {
+            display: inline;
+            vertical-align: top;
+        }
+        
+        .log-success {
+            border-left-color: #28a745;
+            color: #90ee90;
+            background: rgba(40, 167, 69, 0.1);
+        }
+        
+        .log-error {
+            border-left-color: #dc3545;
+            color: #ff6b6b;
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .log-running {
+            border-left-color: #007bff;
+            color: #87ceeb;
+            background: rgba(0, 123, 255, 0.1);
+        }
+        
+        .log-info {
+            border-left-color: #6c757d;
+            color: #d4d4d4;
+            background: rgba(108, 117, 125, 0.1);
+        }
+        
+        /* 滚动条样式 */
+        .task-list::-webkit-scrollbar,
+        .logs-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .task-list::-webkit-scrollbar-track,
+        .logs-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .task-list::-webkit-scrollbar-thumb,
+        .logs-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .task-list::-webkit-scrollbar-thumb:hover,
+        .logs-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧任务列表区域 -->
+        <div class="task-panel">
+            <div class="header">
+                <h1>Python脚本执行控制面板</h1>
+            </div>
+            
+            <!-- 状态面板 -->
+            <div class="status-panel">
+                <div id="statusDisplay">
+                    <span class="status-indicator status-idle"></span>
+                    <span id="statusText">空闲</span>
+                    <span id="currentScript"></span>
+                </div>
+            </div>
+
+            <!-- 任务列表 -->
+            <div class="task-list" id="taskList">
+                <!-- 任务项将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 右侧日志区域 -->
+        <div class="log-panel">
+            <div class="log-header">
+                <h3>执行日志</h3>
+                <div class="log-actions">
+                    <button class="refresh-button" onclick="loadLogs()">刷新日志</button>
+                    <button class="clear-button" onclick="clearLogs()">清除日志</button>
+                </div>
+            </div>
+            <div class="logs-container" id="logsPanel">
+                <div class="log-entry log-info">
+                    <span class="timestamp" id="currentTime"></span>
+                    <span>系统就绪，等待执行命令...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 服务器地址配置
+        const SERVER_URL = 'http://10.21.50.195:5000';
+        
+        // 脚本配置（包含详细描述）
+        const SCRIPTS = {
+            script1: {
+                name: '数据同步脚本',
+                description: '执行SQL Server数据库同步任务，更新业务数据表',
+                command: 'python "开发环境/sql server DS/main_sync_final.py"',
+                buttonId: 'btnScript1'
+            },
+            script2: {
+                name: '报表生成脚本', 
+                description: '生成惠氏PSO底表报表，包含销售数据分析',
+                command: 'python "开发环境/惠氏pso底表同步.py"',
+                buttonId: 'btnScript2'
+            },
+            script3: {
+                name: '数据清理脚本',
+                description: '清理过期数据，优化数据库性能，保持数据整洁',
+                command: 'python "生产环境/飞书api读取刷新数据库.py"',
+                buttonId: 'btnScript3'
+            }
+        };
+
+        // 初始化任务列表
+        function initTaskList() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            
+            Object.entries(SCRIPTS).forEach(([key, script]) => {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+                taskItem.innerHTML = `
+                    <button class="task-button" onclick="executeScript('${key}')" id="${script.buttonId}">
+                        执行脚本
+                    </button>
+                    <div class="task-info">
+                        <div class="task-name">${script.name}</div>
+                        <div class="task-description">${script.description}</div>
+                    </div>
+                `;
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        // 更新当前时间
+        function updateCurrentTime() {
+            const currentTimeElement = document.getElementById('currentTime');
+            if (currentTimeElement) {
+                const now = new Date();
+                currentTimeElement.textContent = 
+                    now.toLocaleString('zh-CN', { 
+                        year: 'numeric', 
+                        month: '2-digit', 
+                        day: '2-digit',
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        second: '2-digit'
+                    });
+            }
+        }
+
+        // 更新状态显示
+        async function updateStatus() {
+            try {
+                const response = await fetch(`${SERVER_URL}/status`);
+                const data = await response.json();
+                
+                const statusIndicator = document.querySelector('.status-indicator');
+                const statusText = document.getElementById('statusText');
+                const currentScript = document.getElementById('currentScript');
+                
+                if (statusIndicator && statusText && currentScript) {
+                    if (data.is_running) {
+                        statusIndicator.className = 'status-indicator status-running';
+                        statusText.textContent = '执行中';
+                        currentScript.textContent = ` - 当前执行: ${data.current_script}`;
+                        
+                        // 禁用所有按钮
+                        Object.values(SCRIPTS).forEach(script => {
+                            const button = document.getElementById(script.buttonId);
+                            if (button) {
+                                button.disabled = true;
+                                if (script.name === data.current_script) {
+                                    button.className = 'task-button running';
+                                    button.textContent = '执行中...';
+                                } else {
+                                    button.className = 'task-button';
+                                    button.textContent = '等待中';
+                                }
+                            }
+                        });
+                    } else {
+                        statusIndicator.className = 'status-indicator status-idle';
+                        statusText.textContent = '空闲';
+                        currentScript.textContent = '';
+                        
+                        // 启用所有按钮
+                        Object.values(SCRIPTS).forEach(script => {
+                            const button = document.getElementById(script.buttonId);
+                            if (button) {
+                                button.disabled = false;
+                                button.className = 'task-button';
+                                button.textContent = '执行脚本';
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('获取状态失败:', error);
+            }
+        }
+
+        // 执行脚本
+        async function executeScript(scriptKey) {
+            const script = SCRIPTS[scriptKey];
+            if (!script) return;
+
+            const button = document.getElementById(script.buttonId);
+            button.disabled = true;
+            button.className = 'task-button running';
+            button.textContent = '执行中...';
+
+            try {
+                const response = await fetch(`${SERVER_URL}/execute`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        script_command: script.command,
+                        script_name: script.name
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.status === 423) {
+                    // 正在执行其他脚本
+                    alert(result.message);
+                    button.disabled = false;
+                    button.className = 'task-button';
+                    button.textContent = '执行脚本';
+                } else if (result.status === 'started') {
+                    addLogEntry('running', `${script.name} 开始执行`);
+                    // 开始轮询状态
+                    startStatusPolling();
+                } else {
+                    addLogEntry('error', `执行失败: ${result.message}`);
+                    button.disabled = false;
+                    button.className = 'task-button';
+                    button.textContent = '执行脚本';
+                }
+            } catch (error) {
+                addLogEntry('error', `请求失败: ${error.message}`);
+                button.disabled = false;
+                button.className = 'task-button';
+                button.textContent = '执行脚本';
+            }
+        }
+
+        // 加载日志
+        async function loadLogs() {
+            try {
+                const response = await fetch(`${SERVER_URL}/logs`);
+                const data = await response.json();
+                
+                const logsPanel = document.getElementById('logsPanel');
+                logsPanel.innerHTML = '';
+                
+                if (data.logs && data.logs.length > 0) {
+                    data.logs.forEach(log => {
+                        addLogEntry(log.status, log.message, log.timestamp, false);
+                    });
+                } else {
+                    addLogEntry('info', '暂无执行日志', new Date().toLocaleString(), false);
+                }
+                
+                // 滚动到底部
+                logsPanel.scrollTop = logsPanel.scrollHeight;
+            } catch (error) {
+                addLogEntry('error', `加载日志失败: ${error.message}`);
+            }
+        }
+
+        // 存储当前执行的日志组
+        let currentExecutionGroup = null;
+        
+        // 清除日志
+        function clearLogs() {
+            const logsPanel = document.getElementById('logsPanel');
+            if (logsPanel) {
+                logsPanel.innerHTML = '';
+                addLogEntry('info', '日志已清除', null, true);
+            }
+        }
+
+        // 添加日志条目
+        function addLogEntry(status, message, timestamp = null, scrollToBottom = true) {
+            const logsPanel = document.getElementById('logsPanel');
+            const logEntry = document.createElement('div');
+            
+            const now = timestamp || new Date().toLocaleString('zh-CN', { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit'
+            });
+            
+            // 检查是否是开始执行日志
+            const isStartExecution = message.includes('开始执行');
+            // 检查是否是执行成功日志
+            const isExecutionSuccess = message.includes('执行成功');
+            // 检查是否是脚本输出日志
+            const isScriptOutput = message.includes('输出:');
+            
+            if (isStartExecution) {
+                // 开始执行日志，创建折叠组
+                currentExecutionGroup = {
+                    startLog: null,
+                    outputLogs: []
+                };
+                
+                logEntry.className = `log-entry log-${status} expandable`;
+                
+                // 处理消息中的换行（取消缩进）
+                const formattedMessage = message
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line)
+                    .join('<br>');
+                
+                logEntry.innerHTML = `
+                    <span class="timestamp">${now}</span>
+                    <span>${formattedMessage}</span>
+                    <div class="log-details"></div>
+                `;
+                
+                // 存储开始日志引用
+                currentExecutionGroup.startLog = logEntry;
+                
+                // 添加点击事件来切换展开/折叠
+                logEntry.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+                
+                logsPanel.appendChild(logEntry);
+            } else if (isExecutionSuccess) {
+                // 执行成功日志，不折叠
+                logEntry.className = `log-entry log-${status}`;
+                
+                // 处理消息中的换行（取消缩进）
+                const formattedMessage = message
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line)
+                    .join('<br>');
+                
+                logEntry.innerHTML = `
+                    <span class="timestamp">${now}</span>
+                    <span>${formattedMessage}</span>
+                `;
+                
+                logsPanel.appendChild(logEntry);
+                
+                // 清空当前执行组
+                currentExecutionGroup = null;
+            } else if (isScriptOutput && currentExecutionGroup) {
+                // 脚本输出日志，添加到当前执行组的折叠内容中
+                const detailsContainer = currentExecutionGroup.startLog.querySelector('.log-details');
+                
+                const outputLine = document.createElement('div');
+                outputLine.className = 'log-detail-line';
+                
+                // 提取详细输出
+                const outputContent = message.split('输出:')[1] || message;
+                
+                // 处理详细输出的换行（取消缩进）
+                const formattedOutput = outputContent
+                    .split('\n')
+                    .filter(line => line.trim())
+                    .map(line => line.trim())
+                    .join('<br>');
+                
+                outputLine.innerHTML = formattedOutput;
+                detailsContainer.appendChild(outputLine);
+                
+                // 不单独添加到主日志面板
+                return; // 直接返回，不执行后续的appendChild
+            } else {
+                // 其他日志，直接显示
+                logEntry.className = `log-entry log-${status}`;
+                
+                // 处理消息中的换行（取消缩进）
+                const formattedMessage = message
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line)
+                    .join('<br>');
+                
+                logEntry.innerHTML = `
+                    <span class="timestamp">${now}</span>
+                    <span>${formattedMessage}</span>
+                `;
+                
+                logsPanel.appendChild(logEntry);
+            }
+            
+            if (scrollToBottom) {
+                logsPanel.scrollTop = logsPanel.scrollHeight;
+            }
+        }
+
+        // 状态轮询
+        let statusPollInterval;
+        function startStatusPolling() {
+            if (statusPollInterval) {
+                clearInterval(statusPollInterval);
+            }
+            
+            statusPollInterval = setInterval(async () => {
+                await updateStatus();
+                
+                // 如果正在执行脚本，实时更新日志
+                const response = await fetch(`${SERVER_URL}/status`);
+                const data = await response.json();
+                
+                if (data.is_running) {
+                    await loadLogs(); // 实时刷新日志
+                } else {
+                    clearInterval(statusPollInterval);
+                    await loadLogs(); // 最终刷新日志
+                }
+            }, 1000);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initTaskList();
+            updateStatus();
+            loadLogs();
+            // 每5秒自动更新状态
+            setInterval(updateStatus, 5000);
+        });
+    </script>
+</body>
+</html>
