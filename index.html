@@ -170,6 +170,7 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            position: relative; /* 确保 Toast 提示基于此面板定位 */
         }
 
         .log-header {
@@ -233,15 +234,40 @@
             min-height: 0; 
         }
 
+        /* 修改：将 title 和 复制按钮放在一行 */
+        .sub-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+            border-bottom: 1px dashed #ccc;
+            flex-shrink: 0;
+        }
+        
         .sub-panel-title {
             color: #2c3e50;
             font-size: 12px;
             font-weight: 600;
-            margin-bottom: 5px;
-            border-bottom: 1px dashed #ccc;
-            padding-bottom: 3px;
-            flex-shrink: 0; 
+            margin-bottom: 0; /* 移除原来的 margin */
         }
+        
+        /* 新增：复制按钮样式 */
+        .copy-button {
+            background: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .copy-button:hover {
+            background: #e0a800;
+        }
+        /* /新增：复制按钮样式 */
 
         /* 核心终端样式：通用日志容器 */
         .logs-container {
@@ -316,6 +342,33 @@
             background: #a8a8a8;
         }
 
+        /* ====== 新增：自定义 Toast 提示框样式 ====== */
+        .toast-message {
+            visibility: hidden; /* 默认隐藏 */
+            min-width: 150px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px 15px;
+            position: absolute;
+            z-index: 10;
+            left: 50%; /* 居中 */
+            top: 50px; /* 略微靠上 */
+            transform: translateX(-50%);
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.5s, top 0.5s;
+        }
+
+        .toast-message.show {
+            visibility: visible;
+            opacity: 1;
+            top: 20px; /* 向上滑动进入 */
+        }
+        /* =========================================== */
+
         /* 移动端响应式设计 */
         @media (max-width: 768px) {
             body {
@@ -377,7 +430,10 @@
             
             <div class="logs-container-wrapper">
                 <div class="log-sub-panel">
-                    <h4 class="sub-panel-title">实时脚本输出 (stdout/stderr)</h4>
+                    <div class="sub-panel-header">
+                        <h4 class="sub-panel-title">实时脚本输出 (stdout/stderr)</h4>
+                        <button class="copy-button" onclick="copyOutputLogs()">复制输出</button>
+                    </div>
                     <div class="logs-container" id="scriptOutputPanel">
                         </div>
                 </div>
@@ -388,6 +444,7 @@
                         </div>
                 </div>
             </div>
+            <div id="toastMessage" class="toast-message"></div>
         </div>
     </div>
 
@@ -431,6 +488,21 @@
         };
         
         let logsCleared = false;
+        
+        // === 新增：显示 Toast 提示框的函数 ===
+        function showToast(message) {
+            const toast = document.getElementById("toastMessage");
+            if (toast) {
+                toast.textContent = message;
+                toast.className = "toast-message show";
+                
+                // 3秒后自动隐藏
+                setTimeout(function(){ 
+                    toast.className = toast.className.replace("show", ""); 
+                }, 3000); 
+            }
+        }
+        // ===================================
 
         // 初始化任务列表 (保持不变)
         function initTaskList() {
@@ -529,6 +601,7 @@
                 const result = await response.json();
                 
                 if (response.status === 423) {
+                    // 保持 alert 用于重要错误提示
                     alert(result.message);
                     button.disabled = false;
                     button.className = 'task-button';
@@ -670,6 +743,35 @@
             targetPanel.appendChild(logEntry);
             targetPanel.scrollTop = targetPanel.scrollHeight;
         }
+
+        // 修改：复制脚本输出日志的函数，使用 showToast 替换 alert
+        async function copyOutputLogs() {
+            const scriptOutputPanel = document.getElementById('scriptOutputPanel');
+            // 获取输出框内的所有文本内容
+            const logContent = scriptOutputPanel.innerText;
+
+            if (!logContent.trim()) {
+                showToast('输出框内容为空！');
+                return;
+            }
+
+            try {
+                // 使用 Clipboard API 复制文本
+                await navigator.clipboard.writeText(logContent);
+                showToast('✅ 脚本输出已复制！');
+            } catch (err) {
+                console.error('复制失败: ', err);
+                // 备用方案（不推荐，但作为降级处理）
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = logContent;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                showToast('✅ 复制成功 (兼容模式)');
+            }
+        }
+        // /修改：复制脚本输出日志的函数
 
         // 状态轮询 (保持不变)
         let statusPollInterval;
