@@ -40,6 +40,8 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            /* 关键：确保 task-panel 在小屏幕上不会无限扩张，虽然 flex: 0 0 70% 已经限制，但防止内部元素溢出 */
+            min-width: 0;
         }
         
         .header {
@@ -105,7 +107,7 @@
             background: #dc3545; /* 红色 */
         }
         
-        /* ====== 自定义命令面板样式 (已移除 custom-header 和 custom-tip 样式) ====== */
+        /* ====== 自定义命令面板样式 ====== */
         .custom-command-panel {
             background: #e9f0ff; 
             border: 1px solid #c8d8f0;
@@ -119,7 +121,6 @@
         .custom-input-group {
             display: flex;
             gap: 10px;
-            /* 保持底部留白 */
         }
 
         #customCommandInput {
@@ -211,6 +212,8 @@
         
         .task-info {
             flex: 1;
+            /* 关键：确保此容器不会被其内容撑大，尊重父容器的 flex 布局 */
+            min-width: 0; 
         }
         
         .task-name {
@@ -220,11 +223,16 @@
             font-size: 13px;
         }
         
+        /* ====== 核心修复 ====== */
         .task-description {
             color: #6c757d;
             font-size: 11px;
             line-height: 1.4;
+            /* 强制在任何字符处换行，以防止超长的文件路径或描述溢出 */
+            word-break: break-all; 
+            overflow-wrap: break-word; /* 兼容性写法 */
         }
+        /* ====================== */
 
         /* ======================================= */
         /* 右侧日志区域 (比例固定)                   */
@@ -238,6 +246,8 @@
             display: flex;
             flex-direction: column;
             position: relative; 
+            /* 关键：防止此面板被挤压导致溢出 */
+            min-width: 0;
         }
 
         .log-header {
@@ -459,7 +469,7 @@
     <div class="container">
         <div class="task-panel">
             <div class="header">
-                <h1>Python Script execution control panel 2.0</h1>
+                <h1>Python Script execution control panel 3.0</h1>
             </div>
             
             <div class="status-panel">
@@ -474,7 +484,7 @@
                         <span id="currentScript"></span>
                     </span>
                 </div>
-                </div>
+            </div>
             <div class="custom-command-panel">
                 <div class="custom-input-group">
                     <input type="text" id="customCommandInput" placeholder="请输入要执行的 Python 命令，例如：python D:/script.py arg1">
@@ -590,7 +600,7 @@
             });
         }
 
-        // 更新状态显示 (保留连接状态检查和执行状态更新)
+        // 更新状态显示 (不变)
         async function updateStatus() {
             const connIndicator = document.getElementById('connectionIndicator');
             const connText = document.getElementById('connectionText');
