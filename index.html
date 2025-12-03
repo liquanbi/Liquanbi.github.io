@@ -11,13 +11,13 @@
             padding: 0;
             box-sizing: border-box;
         }
-        /* 关键：body 设置最小高度为视口高度，并禁止溢出 */
+        /* 关键样式：控制屏幕边距 */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             height: 100vh; /* 确保不溢出 */
             overflow: hidden; /* 关键：禁止页面滚动 */
-            padding: 20px;
+            padding: 20px; /* ⬅️ 左右两侧距离屏幕边缘的距离 (20px) */
             font-size: 13px;
             width: 100%;
         }
@@ -36,11 +36,10 @@
             flex: 0 0 70%;
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 20px; /* 内部内容与面板边缘的距离 */
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
-            /* 关键：确保 task-panel 在小屏幕上不会无限扩张，虽然 flex: 0 0 70% 已经限制，但防止内部元素溢出 */
             min-width: 0;
         }
         
@@ -212,7 +211,6 @@
         
         .task-info {
             flex: 1;
-            /* 关键：确保此容器不会被其内容撑大，尊重父容器的 flex 布局 */
             min-width: 0; 
         }
         
@@ -223,16 +221,14 @@
             font-size: 13px;
         }
         
-        /* ====== 核心修复 ====== */
         .task-description {
             color: #6c757d;
             font-size: 11px;
             line-height: 1.4;
-            /* 强制在任何字符处换行，以防止超长的文件路径或描述溢出 */
+            /* 修复长路径溢出 */
             word-break: break-all; 
-            overflow-wrap: break-word; /* 兼容性写法 */
+            overflow-wrap: break-word; 
         }
-        /* ====================== */
 
         /* ======================================= */
         /* 右侧日志区域 (比例固定)                   */
@@ -241,12 +237,11 @@
             flex: 0 0 30%;
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            padding: 20px; /* 内部内容与面板边缘的距离 */
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             position: relative; 
-            /* 关键：防止此面板被挤压导致溢出 */
             min-width: 0;
         }
 
@@ -436,10 +431,11 @@
             opacity: 1;
             top: 20px; 
         }
-        /* 移动端响应式设计 (不变) */
+        
+        /* 移动端响应式设计 */
         @media (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 10px; /* ⬅️ 移动端左右两侧距离屏幕边缘的距离 (10px) */
                 font-size: 14px;
                 height: auto; 
                 overflow-y: auto; 
@@ -469,7 +465,7 @@
     <div class="container">
         <div class="task-panel">
             <div class="header">
-                <h1>Python Script execution control panel 3.0</h1>
+                <h1>Python脚本执行控制面板2.0</h1>
             </div>
             
             <div class="status-panel">
@@ -564,6 +560,64 @@
         };
         
         let logsCleared = false;
+        
+        // ===================================
+        // 新增：历史命令相关变量
+        // ===================================
+        // 存储历史命令的数组 (localStorage 持久化)
+        let commandHistory = JSON.parse(localStorage.getItem('customCommandHistory')) || [];
+        // 当前在历史记录中的位置索引，-1 表示当前输入框内容不是历史记录
+        let historyIndex = -1; 
+        const MAX_HISTORY = 50; // 限制历史记录条数
+
+        // 将命令添加到历史记录
+        function addCommandToHistory(command) {
+            if (!command || commandHistory[0] === command) return; // 避免空值和重复添加
+
+            // 移除旧的重复项
+            commandHistory = commandHistory.filter(c => c !== command);
+            
+            // 添加到最前面
+            commandHistory.unshift(command);
+            
+            // 限制历史记录条数
+            if (commandHistory.length > MAX_HISTORY) {
+                commandHistory = commandHistory.slice(0, MAX_HISTORY);
+            }
+            
+            // 重置索引并保存
+            historyIndex = -1; 
+            localStorage.setItem('customCommandHistory', JSON.stringify(commandHistory));
+        }
+
+        // 导航历史命令
+        function navigateHistory(direction) {
+            if (commandHistory.length === 0) return;
+
+            const inputElement = document.getElementById('customCommandInput');
+            if (!inputElement) return;
+
+            // 'up' 向上（旧记录）， 'down' 向下（新记录/回到输入）
+            if (direction === 'up') {
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                }
+                
+                if (historyIndex >= 0) {
+                    inputElement.value = commandHistory[historyIndex];
+                }
+            } else if (direction === 'down') {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    inputElement.value = commandHistory[historyIndex];
+                } else if (historyIndex === 0) {
+                    // 从第一条历史记录向下，清空输入框
+                    historyIndex = -1;
+                    inputElement.value = '';
+                }
+            }
+        }
+        // ===================================
         
         // === 显示 Toast 提示框的函数 (不变) ===
         function showToast(message) {
@@ -744,7 +798,7 @@
             }
         }
         
-        // 执行自定义命令函数 (不变)
+        // 执行自定义命令函数 (修改：添加历史记录)
         async function executeCustomCommand() {
             const inputElement = document.getElementById('customCommandInput');
             const customCommand = inputElement ? inputElement.value.trim() : '';
@@ -782,6 +836,10 @@
                     button.className = 'custom-execute-button';
                     button.textContent = '执行自定义';
                 } else if (result.status === 'started') {
+                    // ************ 新增历史记录更新 ************
+                    addCommandToHistory(customCommand); 
+                    // *****************************************
+                    
                     addLogEntry('running', `${scriptName} 开始执行`, null, false); 
                     document.getElementById('scriptOutputPanel').innerHTML = '';
                     addLogEntry('info', `--- ${scriptName} 脚本开始输出 ---`, null, true); 
@@ -980,12 +1038,30 @@
             }, 1000); 
         }
 
-        // 初始化 (不变)
+        // 初始化 (修改：添加事件监听器)
         document.addEventListener('DOMContentLoaded', function() {
             initTaskList();
             updateStatus();
             loadLogs();
             setInterval(updateStatus, 5000); 
+            
+            // ************ 新增：历史命令按键监听 ************
+            const customCommandInput = document.getElementById('customCommandInput');
+            if (customCommandInput) {
+                customCommandInput.addEventListener('keydown', function(event) {
+                    // 向上箭头键
+                    if (event.key === 'ArrowUp') {
+                        event.preventDefault(); // 阻止光标移动到行首
+                        navigateHistory('up');
+                    } 
+                    // 向下箭头键
+                    else if (event.key === 'ArrowDown') {
+                        event.preventDefault(); // 阻止光标移动到行尾
+                        navigateHistory('down');
+                    }
+                });
+            }
+            // ***********************************************
         });
     </script>
 </body>
