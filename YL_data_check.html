@@ -1,169 +1,403 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power BI 自动化刷新控制台</title>
-    <!-- 引入 Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Power BI 刷新控制台</title> 
     <style>
-        /* 使用 Inter 字体作为默认字体 */
-        :root {
-            font-family: 'Inter', sans-serif;
+        /* 样式代码不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        /* 确保 iframe 在容器内响应式且占据全部空间 */
-        .report-container {
-            position: relative;
+        
+        body {
+            background: #ffffff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden; 
+            padding: 10px; 
+            font-size: 14px;
             width: 100%;
-            /* 保持 Power BI 默认的宽高比 (16:9, ~56.25%) */
-            padding-top: 56.25%; 
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .report-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+
+        .header-panel {
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            flex-shrink: 0;
+            padding: 2px 0; 
+            height: auto;
+        }
+
+        .refresh-script-button {
+            padding: 6px 15px; 
+            border: none;
+            border-radius: 6px;
+            background: #007bff; 
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .refresh-script-button:hover:not(:disabled) {
+            background: #0056b3;
+        }
+
+        .refresh-script-button:disabled {
+            background: #adb5bd; 
+            cursor: not-allowed;
+            opacity: 1; 
+        }
+        
+        .refresh-script-button.running {
+            background: #ff9800; 
+        }
+
+        .refresh-script-button.cooldown {
+            background: #dc3545; 
+        }
+        
+        .status-text-container {
+            margin-right: 15px;
+            font-weight: 600;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 25px; 
+        }
+
+        .powerbi-container {
+            flex: 1; 
+            min-height: 0; 
+            overflow: hidden; 
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1); 
+        }
+
+        .powerbi-container iframe {
             width: 100%;
             height: 100%;
-            border-radius: 0.5rem; /* 保持圆角 */
+            border: none;
+        }
+
+        .toast-message {
+            visibility: hidden; 
+            min-width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: fixed; 
+            z-index: 100;
+            left: 50%; 
+            top: 15px; 
+            transform: translateX(-50%);
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.5s, top 0.5s;
+        }
+        .toast-message.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header-panel {
+                justify-content: space-between;
+                padding: 5px 0;
+            }
+            .refresh-script-button {
+                min-width: unset;
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .status-text-container {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-
-    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
-
-        <!-- 头部标题和刷新按钮容器 -->
-        <header class="flex justify-between items-center mb-6 border-b pb-4">
-            <h1 class="text-3xl font-extrabold text-gray-900">
-                YLshopdata 实时数据报表
-            </h1>
-            
-            <!-- 刷新按钮 -->
-            <button id="refreshButton" 
-                    class="flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
-                <!-- Icon (lucide-icon 'rotate-cw') -->
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.988 8.988 0 0112 21a8.988 8.988 0 01-8.582-7.894m15.356-2A8.988 8.988 0 0012 3a8.987 8.987 0 00-8.582 4.106"></path></svg>
-                <span>刷新数据集</span>
-            </button>
-        </header>
-
-        <!-- 报表嵌入区域 -->
-        <div class="bg-white shadow-xl rounded-xl overflow-hidden mb-8">
-            <div class="report-container">
-                <!-- 嵌入用户提供的 Power BI 报表 -->
-                <iframe title="YLshopdata_Check" 
-                        src="https://app.powerbi.com/view?r=eyJrIjoiZTRjMjAzZmEtNTFiZi00ZGNlLWI2OTUtODM3M2M4MmUzOThiIiwidCI6IjE3MDA3Yzk5LWUzMzMtNGZlMS1iZWNmLThkYTRjMDI0NWQ2YiIsImMiOjEwfQ%3D%3D" 
-                        frameborder="0" 
-                        allowFullScreen="true">
-                </iframe>
-            </div>
+<body>
+    <div class="header-panel">
+        <div class="status-text-container">
+            <span id="cooldownRemaining"></span>
         </div>
-        
-        <!-- 状态/通知区域 -->
-        <div id="statusArea" class="p-4 rounded-lg transition-all duration-300">
-            <p id="statusMessage" class="font-medium text-gray-700">点击“刷新数据集”按钮以启动后台数据刷新。</p>
-            <p id="statusDetail" class="text-sm text-gray-500 mt-1"></p>
-        </div>
+
+        <button class="refresh-script-button" id="btnRefreshScript" onclick="executeRefreshScript()" disabled>
+            <span id="refreshIcon">❌</span>
+            <span id="refreshButtonText">连接中...</span>
+        </button>
     </div>
 
-    <script>
-        // 🚨 关键配置：替换为您的 ngrok 隧道 URL 🚨
-        // 这个端点应该配置为在接收到 POST 请求时执行您的 Python 刷新脚本
-        const REFRESH_API_URL = "http://https://andre-uncleft-unbiasedly.ngrok-free.dev/D:/Py Project/pbi_refresh_script/YL_refresh_script.py";
+    <div class="powerbi-container">
+        <iframe 
+            title="YLshopdata_Check" 
+            width="100%" 
+            height="100%" 
+            src="https://app.powerbi.com/view?r=eyJrIjoiZTRjMjAzZmEtNTFiZi00ZGNlLWI2OTUtODM3M2M4MmUzOThiIiwidCI6IjE3MDA3Yzk5LWUzMzMtNGZlMS1iZWNmLThkYTRjMDI0NWQ2YiIsImMiOjEwfQ%3D%3D" 
+            frameborder="0" 
+            allowFullScreen="true">
+        </iframe>
+    </div>
+    
+    <div id="toastMessage" class="toast-message"></div>
 
-        const refreshButton = document.getElementById('refreshButton');
-        const statusArea = document.getElementById('statusArea');
-        const statusMessage = document.getElementById('statusMessage');
-        const statusDetail = document.getElementById('statusDetail');
-        const powerBIFrame = document.querySelector('.report-container iframe');
+    <script>
+        // 关键配置
+        const NGROK_HEADERS = {
+            'ngrok-skip-browser-warning': 'true', 
+            'Content-Type': 'application/json'
+        };
+        
+        // 🚨 混淆点：将明文 URL 替换为 Base64 编码
+        // 示例：如果明文是 'https://your-ngrok-address.ngrok-free.dev'
+        // 编码后可能是 'aHR0cHM6Ly95b3VyLW5ncm9rLWFkZHJlc3Mubmdyb2stZnJlZS5kZXY='
+        // ***重要***：请将以下字符串替换为您自己的 Ngrok 地址的 Base64 编码
+        const ENCODED_SERVER_URL = 'aHR0cHM6Ly9hbmRyZS11bmNsZWZ0LXVuYmlhc2VkbHkubmdyb2stZnJlZS5kZXY='; 
+        
+        // **刷新脚本配置**
+        const REFRESH_SCRIPT = {
+            name: 'PowerBI刷新脚本',
+            command: 'python "D:/Py Project/pbi_refresh_script/refresh_script.py"', 
+            buttonId: 'btnRefreshScript'
+        };
+
+        const COOLDOWN_MINUTES = 5;
+        const COOLDOWN_MILLISECONDS = COOLDOWN_MINUTES * 60 * 1000;
+        
+        // 状态存储
+        let lastSuccessfulRefreshTime = localStorage.getItem('lastRefreshTime') ? 
+            new Date(localStorage.getItem('lastRefreshTime')) : null;
+        let wasRunning = false; 
+
+        // === 核心功能函数 ===
 
         /**
-         * 更新状态显示区域的样式和内容
-         * @param {string} type - 状态类型: 'info', 'loading', 'success', 'error'
-         * @param {string} message - 主消息
-         * @param {string} [detail=''] - 详细信息
+         * 🌟 新增：解码函数
          */
-        function updateStatus(type, message, detail = '') {
-            statusMessage.textContent = message;
-            statusDetail.textContent = detail;
-            statusArea.className = 'p-4 rounded-lg transition-all duration-300'; // Reset classes
-
-            switch (type) {
-                case 'loading':
-                    statusArea.classList.add('bg-blue-100', 'text-blue-800', 'animate-pulse');
-                    refreshButton.disabled = true;
-                    refreshButton.querySelector('span').textContent = '刷新中...';
-                    // 刷新报表内容以显示旧数据，同时等待新数据
-                    powerBIFrame.contentWindow.location.reload(); 
-                    break;
-                case 'success':
-                    statusArea.classList.add('bg-green-100', 'text-green-800');
-                    refreshButton.disabled = false;
-                    refreshButton.querySelector('span').textContent = '刷新数据集';
-                    // 刷新报表内容以拉取新的数据集
-                    powerBIFrame.contentWindow.location.reload(); 
-                    break;
-                case 'error':
-                    statusArea.classList.add('bg-red-100', 'text-red-800');
-                    refreshButton.disabled = false;
-                    refreshButton.querySelector('span').textContent = '刷新数据集';
-                    break;
-                case 'info':
-                default:
-                    statusArea.classList.add('bg-gray-100');
-                    refreshButton.disabled = false;
-                    refreshButton.querySelector('span').textContent = '刷新数据集';
-                    break;
+        function getDecodedServerUrl() {
+            try {
+                return atob(ENCODED_SERVER_URL);
+            } catch (e) {
+                console.error("URL 解码失败，请检查 Base64 字符串是否正确。");
+                return null;
             }
         }
 
-        async function handleRefresh() {
-            if (REFRESH_API_URL.includes("your-ngrok-tunnel-address")) {
-                updateStatus('error', 'API URL 配置错误', '请修改代码中的 REFRESH_API_URL 变量为您的实际 ngrok 地址！');
+        function showToast(message) {
+            const toast = document.getElementById("toastMessage");
+            if (toast) {
+                toast.textContent = message;
+                toast.className = "toast-message show";
+                setTimeout(function(){ 
+                    toast.className = toast.className.replace("show", ""); 
+                }, 3000); 
+            }
+        }
+
+        function checkCooldown(button) {
+            const statusText = document.getElementById('statusText');
+            const cooldownRemaining = document.getElementById('cooldownRemaining');
+            // ... (冷却逻辑不变) ...
+            if (!lastSuccessfulRefreshTime) {
+                cooldownRemaining.textContent = '';
+                return false; 
+            }
+            
+            const now = new Date();
+            const elapsedMilliseconds = now - lastSuccessfulRefreshTime;
+            const remainingMilliseconds = COOLDOWN_MILLISECONDS - elapsedMilliseconds;
+
+            if (remainingMilliseconds > 0) {
+                const remainingSeconds = Math.ceil(remainingMilliseconds / 1000);
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds % 60;
+                
+                button.disabled = true;
+                button.className = 'refresh-script-button cooldown';
+                document.getElementById('refreshButtonText').textContent = 'wait5min';
+                document.getElementById('refreshIcon').textContent = '🔒';
+                
+                statusText.textContent = 'wait5min';
+                cooldownRemaining.textContent = `(${minutes}m ${seconds}s)`;
+                return true;
+            } else {
+                cooldownRemaining.textContent = '';
+                return false;
+            }
+        }
+        
+        async function updateStatus() {
+            const statusText = document.getElementById('statusText');
+            const refreshButton = document.getElementById(REFRESH_SCRIPT.buttonId);
+            const SERVER_URL = getDecodedServerUrl(); // 🌟 使用解码后的 URL
+
+            let isConnected = false;
+            let data = { is_running: false };
+            
+            if (!SERVER_URL) return; // 如果解码失败，直接退出
+
+            try {
+                const response = await fetch(`${SERVER_URL}/status`, { 
+                    headers: NGROK_HEADERS 
+                });
+                data = await response.json();
+                isConnected = true;
+            } catch (error) {
+                isConnected = false;
+            }
+
+            // 1. 处理连接失败
+            if (!isConnected) {
+                statusText.textContent = '连接失败';
+                document.getElementById('cooldownRemaining').textContent = '';
+                refreshButton.disabled = true;
+                refreshButton.className = 'refresh-script-button'; 
+                document.getElementById('refreshButtonText').textContent = '连接失败';
+                document.getElementById('refreshIcon').textContent = '❌';
+                return; 
+            }
+
+            // 2. 连接成功，检查执行/冷却状态
+            if (data.is_running) {
+                // ... (执行中状态逻辑不变) ...
+                wasRunning = true; 
+                statusText.textContent = '执行中';
+                document.getElementById('cooldownRemaining').textContent = '';
+                
+                refreshButton.disabled = true;
+                refreshButton.className = 'refresh-script-button running';
+                document.getElementById('refreshButtonText').textContent = '执行中...';
+                document.getElementById('refreshIcon').textContent = '...';
+
+            } else {
+                const justFinished = wasRunning;
+                wasRunning = false;
+                
+                if (justFinished) {
+                    lastSuccessfulRefreshTime = new Date();
+                    localStorage.setItem('lastRefreshTime', lastSuccessfulRefreshTime.toISOString());
+                    localStorage.setItem('lastExecutionStatus', 'success'); 
+                }
+
+                const inCooldown = checkCooldown(refreshButton);
+                
+                if (!inCooldown) {
+                    refreshButton.disabled = false;
+                    refreshButton.className = 'refresh-script-button';
+                    document.getElementById('refreshButtonText').textContent = 'Refresh'; 
+                    document.getElementById('refreshIcon').textContent = '🔄';
+
+                    if (localStorage.getItem('lastExecutionStatus') === 'success') {
+                        statusText.textContent = '已完成刷新';
+                        document.getElementById('cooldownRemaining').textContent = `(上次: ${lastSuccessfulRefreshTime ? lastSuccessfulRefreshTime.toLocaleTimeString('zh-CN') : ''})`;
+                    } else {
+                        statusText.textContent = ''; 
+                        document.getElementById('cooldownRemaining').textContent = '';
+                    }
+                }
+            }
+        }
+
+        async function executeRefreshScript() {
+            const script = REFRESH_SCRIPT;
+            const button = document.getElementById(script.buttonId);
+            const SERVER_URL = getDecodedServerUrl(); // 🌟 使用解码后的 URL
+
+            if (checkCooldown(button) || !SERVER_URL) {
+                if (!SERVER_URL) showToast("URL配置错误，无法执行。");
                 return;
             }
 
-            // 1. 设置为加载中状态
-            updateStatus('loading', '已发送刷新请求...', '等待后台脚本执行和 Power BI 数据集刷新完成...');
+            button.disabled = true;
+            button.className = 'refresh-script-button running';
+            document.getElementById('refreshButtonText').textContent = '发送指令...';
+            document.getElementById('refreshIcon').textContent = '...';
 
             try {
-                // 2. 发送请求给 ngrok/后台服务
-                const response = await fetch(REFRESH_API_URL, {
+                const response = await fetch(`${SERVER_URL}/execute`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    // 如果需要向 Python 脚本传递任何参数，可以在 body 中添加
-                    body: JSON.stringify({ dataset: 'YLshopdata_Check_Dataset' }) 
+                    headers: NGROK_HEADERS, 
+                    body: JSON.stringify({
+                        script_command: script.command,
+                        script_name: script.name
+                    })
                 });
 
-                // 3. 处理响应
-                if (response.ok) {
-                    // 假设 ngrok 后台服务在刷新成功后返回 OK (200)
-                    const resultText = await response.text();
-                    updateStatus('success', '✅ 数据集刷新成功并已确认！', '报表已自动重新加载以显示最新数据。');
-                    console.log("Refresh command succeeded:", resultText);
+                const result = await response.json();
+                
+                if (response.status === 423) {
+                    showToast(`❌ 脚本执行失败: ${result.message}`);
+                    updateStatus(); 
+                } else if (result.status === 'started') {
+                    localStorage.setItem('lastExecutionStatus', 'running');
+                    showToast(`✅ 刷新脚本指令已发送！`);
+                    startStatusPolling(); 
                 } else {
-                    const errorText = await response.text();
-                    updateStatus('error', `❌ 刷新请求失败 (${response.status} 状态码)`, `服务器响应: ${errorText}`);
+                    showToast(`❌ 执行失败: ${result.message || '未知错误'}`);
+                    updateStatus();
                 }
             } catch (error) {
-                // 4. 处理网络错误 (如 ngrok 隧道未运行)
-                updateStatus('error', '⚠️ 刷新请求失败 (网络错误)', `无法连接到 API 地址。请检查您的 ngrok 隧道是否正在运行且 URL 配置正确。详情: ${error.message}`);
-            }
-            
-            // 恢复按钮状态，但如果成功，状态函数内部已处理
-            if (statusArea.classList.contains('animate-pulse')) {
-                updateStatus('info', '点击“刷新数据集”按钮以启动后台数据刷新。');
+                showToast(`❌ 网络请求失败，请检查服务器连接。`);
+                updateStatus();
             }
         }
 
-        refreshButton.addEventListener('click', handleRefresh);
+        // === 轮询控制不变 ===
+        let statusPollInterval;
+        
+        function startStatusPolling() {
+            if (statusPollInterval) clearInterval(statusPollInterval);
+            wasRunning = false; 
 
-        // 页面加载时显示初始状态
-        window.onload = () => {
-             updateStatus('info', '欢迎使用 Power BI 刷新工具', '请确保您的 ngrok 隧道和 Python 脚本正在运行，并替换 REFRESH_API_URL。');
-        };
+            statusPollInterval = setInterval(async () => {
+                const previousIsRunning = wasRunning;
+                
+                await updateStatus(); 
+                
+                const currentIsRunning = document.getElementById('statusText').textContent.includes('执行中');
+                wasRunning = currentIsRunning; 
+
+                if (previousIsRunning && !currentIsRunning) {
+                    clearInterval(statusPollInterval);
+                    await updateStatus(); 
+                    showToast('✅ Power BI 刷新已完成！已启用 5 分钟冷却。');
+                }
+                
+                if (!currentIsRunning && !document.getElementById('statusText').textContent.includes('wait5min')) {
+                     clearInterval(statusPollInterval);
+                }
+            }, 1000); 
+        }
+
+        function startGeneralPolling() {
+            setInterval(updateStatus, 5000); 
+            
+            setInterval(() => {
+                const refreshButton = document.getElementById(REFRESH_SCRIPT.buttonId);
+                if (!document.getElementById('statusText').textContent.includes('执行中')) {
+                    checkCooldown(refreshButton);
+                }
+            }, 1000); 
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus();
+            startGeneralPolling();
+        });
     </script>
 </body>
 </html>
