@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 数据分析报告 - 摩可纳旗舰店用户评价分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #334155;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+        }
+        .section-bg-1 {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat;
+        }
+        .section-bg-2 {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&auto=format&fit=crop&w-800&q=80') left bottom/30% no-repeat;
+        }
+        .section-bg-3 {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat;
+        }
+        .section-bg-4 {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') left bottom/30% no-repeat;
+        }
+        .section-bg-5 {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat;
+        }
+        .shadow-soft {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+        .border-gradient {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white), linear-gradient(135deg, #3b82f6, #1e40af);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- 报告头部 -->
+        <header class="hero-bg text-white rounded-3xl p-8 md:p-12 mb-10 shadow-soft">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-2/3">
+                    <div class="inline-block bg-blue-500/20 backdrop-blur-sm text-blue-200 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                        <i class="fas fa-robot mr-2"></i>AI 数据分析报告
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">任务 ID: 4 - JDE 评价分析</h1>
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-100 mb-4">摩可纳旗舰店用户评价分析报告</h2>
+                    <p class="text-gray-200 text-lg">基于230条用户评价的深度洞察与改进建议</p>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-white">230</div>
+                            <div class="text-blue-100">总评价数</div>
+                        </div>
+                        <div class="flex justify-between mt-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-300">77.4%</div>
+                                <div class="text-sm text-blue-100">好评率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-amber-300">22.6%</div>
+                                <div class="text-sm text-blue-100">差评率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="space-y-10">
+            <!-- 第一部分：数据概览 -->
+            <section class="section-bg-1 bg-white rounded-3xl p-8 shadow-soft">
+                <div class="flex items-center mb-6">
+                    <div class="bg-blue-600 text-white w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-bar text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">一、 数据概览</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="border-gradient rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-slate-700 mb-3 flex items-center">
+                            <i class="fas fa-list-ol text-blue-500 mr-2"></i>评价数量与时间范围
+                        </h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>本次分析共包含 <strong class="text-blue-600">230</strong> 条用户评价。</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-calendar-alt text-amber-500 mt-1 mr-2"></i>
+                                <span>数据推测主要集中在大促活动后（如“双十一”）。</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-store text-purple-500 mt-1 mr-2"></i>
+                                <span>店铺分布：<code class="bg-slate-100 px-2 py-1 rounded">moccona旗舰店</code> 评价占绝对主体（226条，98.3%）。</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="border-gradient rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-slate-700 mb-3 flex items-center">
+                            <i class="fas fa-star-half-alt text-yellow-500 mr-2"></i>评分分布与整体满意度
+                        </h3>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-green-600 font-medium">好评 (积极)</span>
+                                <span class="font-semibold">178条 (77.4%)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3">
+                                <div class="bg-green-500 h-3 rounded-full" style="width: 77.4%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-amber-600 font-medium">差评 (消极)</span>
+                                <span class="font-semibold">52条 (22.6%)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3">
+                                <div class="bg-amber-500 h-3 rounded-full" style="width: 22.6%"></div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm mt-4"><i class="fas fa-info-circle text-blue-500 mr-1"></i> 整体满意度尚可，但超过20%的差评率揭示了显著痛点。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第二部分：核心问题列表 -->
+            <section class="section-bg-2 bg-white rounded-3xl p-8 shadow-soft">
+                <div class="flex items-center mb-6">
+                    <div class="bg-amber-600 text-white w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">二、 核心问题列表（聚焦负面评价）</h2>
+                </div>
+                <p class="text-slate-600 mb-8">通过对48条有效差评进行文本聚类分析，高频问题可归纳为以下四大维度：</p>
+
+                <div class="space-y-8">
+                    <!-- 维度一 -->
+                    <div class="border-l-4 border-red-500 pl-6 py-2 bg-red-50/50 rounded-r-2xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">维度一：产品包装与品控 <span class="inline-block bg-red-100 text-red-800 text-sm font-semibold px-3 py-1 rounded-full ml-2">问题最集中、情绪最强烈</span></h3>
+                                <p class="text-slate-600 mb-3"><strong>高频问题点：</strong>包装破损/简陋、密封不严、赠品质量差、生产日期不新鲜。</p>
+                                <p class="text-slate-600 mb-3"><strong>用户情绪：</strong> <span class="text-red-600 font-semibold">强烈不满、失望、感到不安全</span>。</p>
+                                <p class="text-slate-600"><strong>紧急程度：</strong> <span class="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">高</span></p>
+                            </div>
+                            <div class="hidden md:block">
+                                <i class="fas fa-box-open text-red-300 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-white rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-700 mb-2 flex items-center"><i class="fas fa-quote-left text-red-400 mr-2"></i>典型评价例证</h4>
+                            <p class="text-slate-600 italic">“包装不是一点半点的差，一点都不上档次”</p>
+                            <p class="text-slate-600 italic mt-2">“收到后其中一瓶的封签是开的…这是要入口的食品，太没有安全感了…”</p>
+                        </div>
+                    </div>
+
+                    <!-- 维度二 -->
+                    <div class="border-l-4 border-amber-500 pl-6 py-2 bg-amber-50/50 rounded-r-2xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">维度二：产品设计缺陷 <span class="inline-block bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full ml-2">体验痛点明确</span></h3>
+                                <p class="text-slate-600 mb-3"><strong>高频问题点：</strong>瓶盖/包装开口设计难用、条装与瓶装品质差异、部分口味接受度低。</p>
+                                <p class="text-slate-600 mb-3"><strong>用户情绪：</strong> <span class="text-amber-600 font-semibold">抱怨、困惑、体验挫败</span>。</p>
+                                <p class="text-slate-600"><strong>紧急程度：</strong> <span class="inline-block bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">中高</span></p>
+                            </div>
+                            <div class="hidden md:block">
+                                <i class="fas fa-tools text-amber-300 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-white rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-700 mb-2 flex items-center"><i class="fas fa-quote-left text-amber-400 mr-2"></i>典型评价例证</h4>
+                            <p class="text-slate-600 italic">“罐子开口方式能不能换个设计，打开的时候非常洒出来一片…”</p>
+                            <p class="text-slate-600 italic mt-2">“为什么条装的很容易融化 …瓶装的很难融化也打发不起来……”</p>
+                        </div>
+                    </div>
+
+                    <!-- 维度三 -->
+                    <div class="border-l-4 border-blue-500 pl-6 py-2 bg-blue-50/50 rounded-r-2xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">维度三：价格与促销体验 <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full ml-2">引发公平性质疑</span></h3>
+                                <p class="text-slate-600 mb-3"><strong>高频问题点：</strong>价格波动大、促销信息不透明、性价比感觉低。</p>
+                                <p class="text-slate-600 mb-3"><strong>用户情绪：</strong> <span class="text-blue-600 font-semibold">感到被欺骗、不满</span>。</p>
+                                <p class="text-slate-600"><strong>紧急程度：</strong> <span class="inline-block bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">中</span></p>
+                            </div>
+                            <div class="hidden md:block">
+                                <i class="fas fa-tag text-blue-300 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-white rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-700 mb-2 flex items-center"><i class="fas fa-quote-left text-blue-400 mr-2"></i>典型评价例证</h4>
+                            <p class="text-slate-600 italic">“买完就降价+更多的赠品…”</p>
+                            <p class="text-slate-600 italic mt-2">“非常坑人，加赠那么大的字，上面还有一行很小的字…”</p>
+                        </div>
+                    </div>
+
+                    <!-- 维度四 -->
+                    <div class="border-l-4 border-slate-500 pl-6 py-2 bg-slate-50/50 rounded-r-2xl">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2">维度四：物流与服务 <span class="inline-block bg-slate-100 text-slate-800 text-sm font-semibold px-3 py-1 rounded-full ml-2">响应与解决不力</span></h3>
+                                <p class="text-slate-600 mb-3"><strong>高频问题点：</strong>物流暴力运输、客服响应机械/推诿、问题解决意愿低。</p>
+                                <p class="text-slate-600 mb-3"><strong>用户情绪：</strong> <span class="text-slate-600 font-semibold">无奈、失望、对服务态度不满</span>。</p>
+                                <p class="text-slate-600"><strong>紧急程度：</strong> <span class="inline-block bg-slate-500 text-white text-xs font-bold px-3 py-1 rounded-full">中</span></p>
+                            </div>
+                            <div class="hidden md:block">
+                                <i class="fas fa-shipping-fast text-slate-300 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 bg-white rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-700 mb-2 flex items-center"><i class="fas fa-quote-left text-slate-400 mr-2"></i>典型评价例证</h4>
+                            <p class="text-slate-600 italic">“味道不错，但是包装差劲，物流暴力，客服态度服务一般…”</p>
+                            <p class="text-slate-600 italic mt-2">“客服好像机器人一样…”</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第三部分：用户满意维度 -->
+            <section class="section-bg-3 bg-white rounded-3xl p-8 shadow-soft">
+                <div class="flex items-center mb-6">
+                    <div class="bg-green-600 text-white w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-thumbs-up text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">三、 用户满意维度（聚焦正面评价）</h2>
+                </div>
+                <p class="text-slate-600 mb-8">从178条好评中，提取用户最满意的方面：</p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-500 text-white w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">产品口味与品质</h3>
+                        </div>
+                        <p class="text-slate-600">最核心的满意点。用户频繁称赞“好喝”、“香醇”、“油脂丰富”、“不酸”或“苦味适中”。“冻干咖啡天花板”、“媲美现磨”等评价体现了产品力优势。</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 border border-purple-100">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-500 text-white w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-user-star"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">品牌与代言人效应</h3>
+                        </div>
+                        <p class="text-slate-600">大量评价明确提及因代言人<strong class="text-purple-600">阿云嘎</strong>而购买或支持，代言人带来了显著的新客流量和粉丝好感度，如“支持阿云嘎”、“阿老师推荐不会错”。</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-amber-500 text-white w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">性价比与促销</h3>
+                        </div>
+                        <p class="text-slate-600">在价格满意时，“大促划算”、“性价比高”、“囤货实惠”是重要购买动力。</p>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-100">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-500 text-white w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">便利性与溶解性</h3>
+                        </div>
+                        <p class="text-slate-600">“冲泡方便”、“溶解快”、“打发容易”满足了速溶咖啡的核心需求。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第四部分：根因推测 -->
+            <section class="section-bg-4 bg-white rounded-3xl p-8 shadow-soft">
+                <div class="flex items-center mb-6">
+                    <div class="bg-indigo-600 text-white w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-search text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">四、 根因推测</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-boxes text-red-500 mr-2"></i>包装品控问题
+                        </h3>
+                        <p class="text-slate-600">可能源于<strong class="text-slate-800">供应链管理漏洞</strong>（如不同批次包装材料质量不一）、<strong class="text-slate-800">仓储物流环节操作不规范</strong>，以及<strong class="text-slate-800">对赠品供应商质量把控不严</strong>。</p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-cogs text-amber-500 mr-2"></i>产品设计问题
+                        </h3>
+                        <p class="text-slate-600">瓶盖设计可能未经过充分的<strong class="text-slate-800">用户体验测试</strong>，忽视了日常使用的便利性和防洒漏需求。</p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-chart-line text-blue-500 mr-2"></i>价格与促销问题
+                        </h3>
+                        <p class="text-slate-600">可能因<strong class="text-slate-800">不同平台或渠道的价控策略不一致</strong>，以及<strong class="text-slate-800">活动策划与宣传页面设计不够清晰</strong>，导致消费者误解。</p>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-headset text-slate-500 mr-2"></i>服务问题
+                        </h3>
+                        <p class="text-slate-600">客服可能缺乏<strong class="text-slate-800">有效授权和问题解决流程（SOP）</strong>，导致只能机械回应，无法灵活处理客户投诉。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 第五部分：改进建议表 -->
+            <section class="section-bg-5 bg-white rounded-3xl p-8 shadow-soft">
+                <div class="flex items-center mb-6">
+                    <div class="bg-teal-600 text-white w-12 h-12 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-lightbulb text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">五、 改进建议表</h2>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-800 text-white">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-sm font-semibold">问题维度</th>
+                                <th scope="col" class="px-6 py-4 text-left text-sm font-semibold">短期可落地优化措施 (1-3个月)</th>
+                                <th scope="col" class="px-6 py-4 text-left text-sm font-semibold">长期策略建议 (3-12个月)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 bg-white">
+                            <tr class="hover:bg-slate-50/80">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 border-r border-slate-200">包装与品控</td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>紧急加固包装</strong>：立即检查并升级运输外箱、内部缓冲材料。</li>
+                                        <li><strong>赠品下架与更换</strong>：暂停发放质量投诉集中的赠品。</li>
+                                        <li><strong>日期优先发货</strong>：建立发货系统规则，优先发出最新产品。</li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>包装设计迭代</strong>：重新设计瓶盖，采用更易开启且防洒的专利设计。</li>
+                                        <li><strong>供应链质量审计</strong>：对供应商建立严格的质量准入与审计制度。</li>
+                                        <li><strong>推行溯源机制</strong>：探索在包装上提供二维码，提升透明度。</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 border-r border-slate-200">产品设计</td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>提供使用指南</strong>：在商品详情页附上“正确开盖技巧”图示。</li>
+                                        <li><strong>明确产品差异</strong>：清晰说明条装与瓶装可能因形态导致的溶解差异。</li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>成立用户体验小组</strong>：针对包装设计进行用户调研和A/B测试。</li>
+                                        <li><strong>产品线梳理</strong>：考虑推出更小规格的“尝鲜组合装”。</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/80">
+                                <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 border-r border-slate-200">价格与促销</td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>优化活动页面</strong>：促销信息必须醒目、无歧义。</li>
+                                        <li><strong>实施价保政策</strong>：大促期间明确公布价保规则，简化申请流程。</li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4 text-slate-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>全渠道价格管控</strong>：建立更严格的价格管理体系，减少渠道间价格差异。</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="mt-12 pt-8 border-t border-slate-300 text-center text-slate-500 text-sm">
+            <p>本报告由 AI 数据分析系统生成 | 数据来源：摩可纳旗舰店用户评价 | 生成日期：<span id="currentDate"></span></p>
+            <p class="mt-2"><i class="fas fa-shield-alt text-blue-400 mr-1"></i> 报告内容仅供参考，建议结合业务实际情况进行决策。</p>
+        </footer>
+    </div>
+
+    <script>
+        // 设置当前日期
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', options);
+    </script>
+</body>
+</html>

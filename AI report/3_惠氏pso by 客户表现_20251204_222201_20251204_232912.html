@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 数据分析报告 - 惠氏PSO客户表现</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+        .section-icon { color: #3b82f6; }
+        .stat-card { border-left: 4px solid #3b82f6; }
+        .badge-good { background-color: #10b981; }
+        .badge-medium { background-color: #f59e0b; }
+        .badge-poor { background-color: #ef4444; }
+        .badge-neutral { background-color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- 头部 -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-8 max-w-4xl">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">AI 数据分析报告</h1>
+                    <p class="text-xl text-blue-100">任务 ID: 3 - 惠氏PSO 客户表现</p>
+                    <p class="text-lg text-blue-200 mt-2">线上渠道布局与动销表现分析报告</p>
+                </div>
+                <div class="mt-4 md:mt-0 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                    <p class="text-sm"><i class="fas fa-calendar-alt mr-2"></i>报告生成日期: <span class="font-semibold">2023-10-27</span></p>
+                    <p class="text-sm mt-1"><i class="fas fa-chart-line mr-2"></i>数据周期: <span class="font-semibold">Q3 2023</span></p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 当前表现分析 -->
+        <section class="mb-12">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-chart-bar text-3xl section-icon mr-4"></i>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">1. 当前表现分析</h2>
+            </div>
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80" alt="数据分析概览" class="w-full h-64 object-cover rounded-2xl shadow-lg mb-8">
+
+            <!-- 1.1 线上开店执行率 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 card-hover">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center"><i class="fas fa-store mr-3"></i>1.1 线上开店执行率（上翻达成率）</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="stat-card bg-blue-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">高达成率客户</p>
+                        <p class="text-2xl font-bold text-blue-700">148 家</p>
+                        <p class="text-sm text-gray-500">占比 37.4%</p>
+                    </div>
+                    <div class="stat-card bg-green-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">优秀 (≥95%)</p>
+                        <p class="text-2xl font-bold text-green-700">~50 家</p>
+                        <p class="text-sm text-gray-500">如物美、华润万家</p>
+                    </div>
+                    <div class="stat-card bg-red-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">问题客户 (0%)</p>
+                        <p class="text-2xl font-bold text-red-700">105 家</p>
+                        <p class="text-sm text-gray-500">占比 26.5%</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4"><strong>整体表现：</strong>大量客户（148家，占37.4%）实现了100%的上翻达成率，表明基础开店执行能力较强。头部客户表现优异，前10大客户上翻达成率均在82%以上。</p>
+                <div class="mb-4">
+                    <p class="font-medium text-gray-800 mb-2">分层分析：</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="badge-good text-white px-3 py-1 rounded-full text-sm">优秀 (≥95%)</span>
+                        <span class="badge-medium text-white px-3 py-1 rounded-full text-sm">良好 (80%-94%)</span>
+                        <span class="badge-poor text-white px-3 py-1 rounded-full text-sm">待改进 (<80%)</span>
+                    </div>
+                </div>
+                <p class="text-gray-700"><strong>关键发现：</strong>存在一批上翻达成率为0%的客户（105家，占26.5%），这些客户完全未执行线上开店计划，是渠道布局的重大缺口。</p>
+            </div>
+
+            <!-- 1.2 铺货执行能力 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 card-hover">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center"><i class="fas fa-truck-loading mr-3"></i>1.2 铺货执行能力（OLA达成率）</h3>
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=300&q=80" alt="物流与铺货" class="w-full h-48 object-cover rounded-xl mb-6">
+                <p class="text-gray-700 mb-4"><strong>整体表现：</strong>达成率两极分化严重，最高达100%，最低为0%，中位数约在40-50%之间。头部客户铺货压力大，前10大客户的OLA目标值巨大，但达成率普遍在47%-70%之间。</p>
+                <p class="text-gray-700"><strong>关键发现：</strong>OLA目标值大的客户，达成率普遍中等；而目标值小的客户，反而可能出现极高或极低的达成率。105家客户的OLA达成率为0%，与上翻达成率为0%的客户高度重叠。</p>
+            </div>
+
+            <!-- 1.3 动销表现 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center"><i class="fas fa-fire mr-3"></i>1.3 动销表现（动销率）</h3>
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-700">整体动销率中位数</span>
+                        <span class="text-2xl font-bold text-orange-600">10%-20%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-orange-500 h-4 rounded-full" style="width: 15%"></div>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4"><strong>整体表现：</strong>动销率普遍偏低，中位数约在10%-20%之间，174家客户（44%）动销率为0%，表明铺货后的销售转化是普遍难题。头部客户动销中等，孩子王37%、爱婴室34%。</p>
+                <p class="text-gray-700"><strong>相关性观察：</strong>高OLA达成率不一定带来高动销率（如123专业母婴OLA达成率76%，动销率仅1%）。部分客户在中等铺货水平下实现了较高动销（如Ole OLA达成率50%，动销率52%）。</p>
+            </div>
+        </section>
+
+        <!-- 环比上期表现 -->
+        <section class="mb-12">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-exchange-alt text-3xl section-icon mr-4"></i>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">2. 环比上期表现</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                    <h4 class="font-semibold text-lg text-gray-800 mb-4">2.1 上翻达成率环比</h4>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600">51%</div>
+                            <div class="text-gray-600 text-sm">客户环比变化为0.0%</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 text-sm">整体稳定，202家客户环比无变化。需紧急关注中百仓储（-22.2%）、东莞嘉荣（-74.1%）等大幅下滑客户。</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                    <h4 class="font-semibold text-lg text-gray-800 mb-4">2.2 OLA改善率</h4>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-green-600">47%</div>
+                            <div class="text-gray-600 text-sm">客户改善率为0.0%</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 text-sm">改善与恶化并存。沃尔玛、孩子王等持续改善；东莞嘉荣、万兴等大幅恶化。</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                    <h4 class="font-semibold text-lg text-gray-800 mb-4">2.3 动销改善率</h4>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-purple-600">52.5%</div>
+                            <div class="text-gray-600 text-sm">客户改善率为0.0%</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 text-sm">小幅波动为主。东莞嘉荣、佛山乐于宝宝等动销有所改善；爱婴故事、永旺吉之岛等需关注下滑原因。</p>
+                </div>
+            </div>
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=300&q=80" alt="环比趋势图" class="w-full h-64 object-cover rounded-2xl shadow-lg">
+        </section>
+
+        <!-- 业务建议 -->
+        <section class="mb-12">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-lightbulb text-3xl section-icon mr-4"></i>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">3. 业务建议</h2>
+            </div>
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80" alt="战略规划" class="w-full h-64 object-cover rounded-2xl shadow-lg mb-8">
+
+            <!-- 3.1 分层策略 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 card-hover">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4">3.1 针对不同客户群体的分层策略</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="border border-blue-100 rounded-xl p-5 bg-gradient-to-br from-blue-50 to-white">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-3">1</div>
+                            <h4 class="font-bold text-gray-900">第一梯队</h4>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-3"><strong>头部客户 (上翻目标>500)</strong></p>
+                        <ul class="text-gray-600 text-sm space-y-2">
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>聚焦铺货深度至80%+</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>优化动销转化机制</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>每周联合复盘会议</li>
+                        </ul>
+                    </div>
+                    <div class="border border-green-100 rounded-xl p-5 bg-gradient-to-br from-green-50 to-white">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mr-3">2</div>
+                            <h4 class="font-bold text-gray-900">第二梯队</h4>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-3"><strong>中型客户 (目标50-500)</strong></p>
+                        <ul class="text-gray-600 text-sm space-y-2">
+                            <li><i class="fas fa-tools text-blue-500 mr-2"></i>补齐开店缺口</li>
+                            <li><i class="fas fa-tools text-blue-500 mr-2"></i>提升铺货效率</li>
+                            <li><i class="fas fa-tools text-blue-500 mr-2"></i>建立“快速启动包”</li>
+                        </ul>
+                    </div>
+                    <div class="border border-orange-100 rounded-xl p-5 bg-gradient-to-br from-orange-50 to-white">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold mr-3">3</div>
+                            <h4 class="font-bold text-gray-900">第三梯队</h4>
+                        </div>
+                        <p class="text-gray-700 text-sm mb-3"><strong>小型及问题客户</strong></p>
+                        <ul class="text-gray-600 text-sm space-y-2">
+                            <li><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>重点激活“零执行”客户</li>
+                            <li><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>资源聚焦潜力客户</li>
+                            <li><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>设置3个月激活期</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.2 流程优化 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 card-hover">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4">3.2 流程与机制优化</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center"><i class="fas fa-project-diagram text-blue-500 mr-2"></i>开店到铺货的流程衔接</h4>
+                        <p class="text-gray-700 text-sm">分析上翻达成率高但OLA达成率低的客户，优化铺货流程。建立开店-铺货联动考核机制。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-3 flex items-center"><i class="fas fa-rocket text-green-500 mr-2"></i>铺货到动销的转化提升</h4>
+                        <p class="text-gray-700 text-sm">研究高动销客户成功案例，提炼可复制经验。建立动销预警机制。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.3 资源分配 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 card-hover">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4">3.3 资源分配建议</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <span class="badge-poor text-white px-3 py-1 rounded-full text-sm font-bold mr-4">紧急</span>
+                        <div>
+                            <p class="font-medium text-gray-800">处理环比大幅下滑的客户</p>
+                            <p class="text-gray-600 text-sm">如东莞嘉荣、中百仓储等，防止恶化扩散。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="badge-medium text-white px-3 py-1 rounded-full text-sm font-bold mr-4">重点</span>
+                        <div>
+                            <p class="font-medium text-gray-800">提升头部客户的OLA达成率和动销率</p>
+                            <p class="text-gray-600 text-sm">对整体业绩影响最大。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="badge-neutral text-white px-3 py-1 rounded-full text-sm font-bold mr-4">基础</span>
+                        <div>
+                            <p class="font-medium text-gray-800">激活零执行客户</p>
+                            <p class="text-gray-600 text-sm">扩大渠道基础覆盖面。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结 -->
+        <section class="mb-12">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-flag-checkered text-3xl section-icon mr-4"></i>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">4. 总结</h2>
+            </div>
+            <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-2xl shadow-xl p-8">
+                <p class="text-xl font-semibold mb-4">当前线上渠道布局呈现“开店基础良好、铺货执行分化、动销转化不足”的特点。</p>
+                <p class="mb-6">头部客户在开店执行上表现稳健，但铺货深度和销售转化仍有较大提升空间；大量中小客户处于未激活或低效状态，是渠道布局的主要缺口。</p>
+                <div class="bg-white/20 backdrop-blur-sm rounded-xl p-5">
+                    <p class="font-bold text-lg mb-2">下阶段核心策略：</p>
+                    <p class="text-blue-100"><strong>“巩固头部、激活中部、清理尾部”</strong>的分层策略，重点加强铺货到动销的转化效率，建立从开店到销售的端到端运营体系，实现线上渠道从“布局”到“产出”的质变。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-lg font-semibold text-white mb-1">AI 数据分析报告</p>
+                    <p class="text-sm">© 2023 惠氏PSO业务分析团队. 所有数据均为模拟分析。</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition"><i class="fab fa-github text-xl"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fas fa-envelope text-xl"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fas fa-print text-xl"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-sm">
+                <p>本报告由AI系统自动生成，数据截止至2023年第三季度。建议结合业务实际情况进行决策。</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
