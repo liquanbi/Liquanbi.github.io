@@ -1,23 +1,98 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>文件索引</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Report Center</title>
     <style>
-        /* 简单样式，保持页面整洁 */
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 10px; }
-        a { text-decoration: none; font-weight: bold; color: #0366d6; }
+        /* CSS 变量定义 - 方便统一修改主题颜色 */
+        :root {
+            --primary-color: #007bff; /* 主色调：蓝色 */
+            --secondary-color: #6c757d; /* 辅助色调：灰色 */
+            --background-color: #f8f9fa; /* 页面背景色 */
+            --card-background: #ffffff; /* 卡片背景色 */
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+            --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15); /* 鼠标悬停阴影 */
+            --text-color: #343a40; /* 主要文字颜色 */
+        }
+
+        /* 基础样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        /* 列表容器样式 */
+        .file-list {
+            list-style: none;
+            padding: 0;
+            display: grid; /* 使用 Grid 布局创建多列效果 */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* 列表项（卡片）样式 */
+        .file-list li {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden; /* 确保链接和边框都在卡片内 */
+        }
+
+        /* 鼠标悬停效果 */
+        .file-list li:hover {
+            transform: translateY(-5px); /* 向上轻微浮动 */
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* 链接（导航项）样式 */
+        .file-list a {
+            display: block; /* 使整个卡片区域可点击 */
+            padding: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 链接文本悬停效果 */
+        .file-list a:hover {
+            color: var(--primary-color);
+            background-color: rgba(0, 123, 255, 0.05); /* 浅蓝色背景 */
+        }
+
+        /* 图标/标识符样式 (可添加) */
+        .file-list a::before {
+            content: '📄'; /* 文件图标 */
+            margin-right: 15px;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
-    <h1>文件导航</h1>
-    <ul>
-        <li><a href="3_惠氏pso by 客户表现_20251204_222201_20251204_232912.html">惠氏pso1</a></li>
-        <li><a href="3_惠氏pso by 客户表现_20251204_222201_20251204_235229.html">惠氏ps2</a></li>
-        <li><a href="4_JDE 评价分析_20251204_222321_20251205_002241.html">JDE 评价分析</a></li>
-        </ul>
+    <h1>📂 文件导航中心</h1>
+    <ul class="file-list">
+        <li><a href="3_惠氏pso by 客户表现_20251204_222201_20251204_232912.html" target="_blank">惠氏pso 客户表现 1</a></li>
+        <li><a href="3_惠氏pso by 客户表现_20251204_222201_20251204_235229.html" target="_blank">惠氏pso 客户表现 2</a></li>
+        <li><a href="4_JDE 评价分析_20251204_222321_20251205_002241.html" target="_blank">JDE 评价分析</a></li>
+        <li><a href="#" target="_blank">示例文件 - 待添加</a></li>
+    </ul>
 </body>
 </html>
