@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power BI 刷新控制台</title> 
+    <title>Power BI data check</title> 
     <style>
-        /* 样式代码不变 */
         * {
             margin: 0;
             padding: 0;
@@ -156,21 +155,15 @@
     <div id="toastMessage" class="toast-message"></div>
 
     <script>
-        // 关键配置
         const NGROK_HEADERS = {
             'ngrok-skip-browser-warning': 'true', 
             'Content-Type': 'application/json'
         };
         
-        // 🚨 混淆点：将明文 URL 替换为 Base64 编码
-        // 示例：如果明文是 'https://your-ngrok-address.ngrok-free.dev'
-        // 编码后可能是 'aHR0cHM6Ly95b3VyLW5ncm9rLWFkZHJlc3Mubmdyb2stZnJlZS5kZXY='
-        // ***重要***：请将以下字符串替换为您自己的 Ngrok 地址的 Base64 编码
         const ENCODED_SERVER_URL = 'aHR0cHM6Ly9hbmRyZS11bmNsZWZ0LXVuYmlhc2VkbHkubmdyb2stZnJlZS5kZXY='; 
         
-        // **刷新脚本配置**
         const REFRESH_SCRIPT = {
-            name: 'PowerBI刷新脚本',
+            name: 'PowerBI refresh',
             command: 'python "D:/Py Project/pbi_refresh_script/refresh_script.py"', 
             buttonId: 'btnRefreshScript'
         };
@@ -178,21 +171,15 @@
         const COOLDOWN_MINUTES = 5;
         const COOLDOWN_MILLISECONDS = COOLDOWN_MINUTES * 60 * 1000;
         
-        // 状态存储
         let lastSuccessfulRefreshTime = localStorage.getItem('lastRefreshTime') ? 
             new Date(localStorage.getItem('lastRefreshTime')) : null;
         let wasRunning = false; 
 
-        // === 核心功能函数 ===
-
-        /**
-         * 🌟 新增：解码函数
-         */
         function getDecodedServerUrl() {
             try {
                 return atob(ENCODED_SERVER_URL);
             } catch (e) {
-                console.error("URL 解码失败，请检查 Base64 字符串是否正确。");
+                console.error("URL Decoding failed");
                 return null;
             }
         }
@@ -211,7 +198,6 @@
         function checkCooldown(button) {
             const statusText = document.getElementById('statusText');
             const cooldownRemaining = document.getElementById('cooldownRemaining');
-            // ... (冷却逻辑不变) ...
             if (!lastSuccessfulRefreshTime) {
                 cooldownRemaining.textContent = '';
                 return false; 
@@ -243,12 +229,12 @@
         async function updateStatus() {
             const statusText = document.getElementById('statusText');
             const refreshButton = document.getElementById(REFRESH_SCRIPT.buttonId);
-            const SERVER_URL = getDecodedServerUrl(); // 🌟 使用解码后的 URL
+            const SERVER_URL = getDecodedServerUrl(); 
 
             let isConnected = false;
             let data = { is_running: false };
             
-            if (!SERVER_URL) return; // 如果解码失败，直接退出
+            if (!SERVER_URL) return; 
 
             try {
                 const response = await fetch(`${SERVER_URL}/status`, { 
@@ -260,7 +246,6 @@
                 isConnected = false;
             }
 
-            // 1. 处理连接失败
             if (!isConnected) {
                 statusText.textContent = '连接失败';
                 document.getElementById('cooldownRemaining').textContent = '';
@@ -271,9 +256,7 @@
                 return; 
             }
 
-            // 2. 连接成功，检查执行/冷却状态
             if (data.is_running) {
-                // ... (执行中状态逻辑不变) ...
                 wasRunning = true; 
                 statusText.textContent = '执行中';
                 document.getElementById('cooldownRemaining').textContent = '';
@@ -315,7 +298,7 @@
         async function executeRefreshScript() {
             const script = REFRESH_SCRIPT;
             const button = document.getElementById(script.buttonId);
-            const SERVER_URL = getDecodedServerUrl(); // 🌟 使用解码后的 URL
+            const SERVER_URL = getDecodedServerUrl(); 
 
             if (checkCooldown(button) || !SERVER_URL) {
                 if (!SERVER_URL) showToast("URL配置错误，无法执行。");
@@ -356,7 +339,6 @@
             }
         }
 
-        // === 轮询控制不变 ===
         let statusPollInterval;
         
         function startStatusPolling() {
