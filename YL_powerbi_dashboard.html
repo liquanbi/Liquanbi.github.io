@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI 自动化刷新控制台</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 使用 Inter 字体作为默认字体 */
+        :root {
+            font-family: 'Inter', sans-serif;
+        }
+        /* 确保 iframe 在容器内响应式且占据全部空间 */
+        .report-container {
+            position: relative;
+            width: 100%;
+            /* 保持 Power BI 默认的宽高比 (16:9, ~56.25%) */
+            padding-top: 56.25%; 
+        }
+        .report-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.5rem; /* 保持圆角 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- 头部标题和刷新按钮容器 -->
+        <header class="flex justify-between items-center mb-6 border-b pb-4">
+            <h1 class="text-3xl font-extrabold text-gray-900">
+                YLshopdata 实时数据报表
+            </h1>
+            
+            <!-- 刷新按钮 -->
+            <button id="refreshButton" 
+                    class="flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                <!-- Icon (lucide-icon 'rotate-cw') -->
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.988 8.988 0 0112 21a8.988 8.988 0 01-8.582-7.894m15.356-2A8.988 8.988 0 0012 3a8.987 8.987 0 00-8.582 4.106"></path></svg>
+                <span>刷新数据集</span>
+            </button>
+        </header>
+
+        <!-- 报表嵌入区域 -->
+        <div class="bg-white shadow-xl rounded-xl overflow-hidden mb-8">
+            <div class="report-container">
+                <!-- 嵌入用户提供的 Power BI 报表 -->
+                <iframe title="YLshopdata_Check" 
+                        src="https://app.powerbi.com/view?r=eyJrIjoiZTRjMjAzZmEtNTFiZi00ZGNlLWI2OTUtODM3M2M4MmUzOThiIiwidCI6IjE3MDA3Yzk5LWUzMzMtNGZlMS1iZWNmLThkYTRjMDI0NWQ2YiIsImMiOjEwfQ%3D%3D" 
+                        frameborder="0" 
+                        allowFullScreen="true">
+                </iframe>
+            </div>
+        </div>
+        
+        <!-- 状态/通知区域 -->
+        <div id="statusArea" class="p-4 rounded-lg transition-all duration-300">
+            <p id="statusMessage" class="font-medium text-gray-700">点击“刷新数据集”按钮以启动后台数据刷新。</p>
+            <p id="statusDetail" class="text-sm text-gray-500 mt-1"></p>
+        </div>
+    </div>
+
+    <script>
+        // 🚨 关键配置：替换为您的 ngrok 隧道 URL 🚨
+        // 这个端点应该配置为在接收到 POST 请求时执行您的 Python 刷新脚本
+        const REFRESH_API_URL = "http://your-ngrok-tunnel-address/trigger-powerbi-refresh";
+
+        const refreshButton = document.getElementById('refreshButton');
+        const statusArea = document.getElementById('statusArea');
+        const statusMessage = document.getElementById('statusMessage');
+        const statusDetail = document.getElementById('statusDetail');
+        const powerBIFrame = document.querySelector('.report-container iframe');
+
+        /**
+         * 更新状态显示区域的样式和内容
+         * @param {string} type - 状态类型: 'info', 'loading', 'success', 'error'
+         * @param {string} message - 主消息
+         * @param {string} [detail=''] - 详细信息
+         */
+        function updateStatus(type, message, detail = '') {
+            statusMessage.textContent = message;
+            statusDetail.textContent = detail;
+            statusArea.className = 'p-4 rounded-lg transition-all duration-300'; // Reset classes
+
+            switch (type) {
+                case 'loading':
+                    statusArea.classList.add('bg-blue-100', 'text-blue-800', 'animate-pulse');
+                    refreshButton.disabled = true;
+                    refreshButton.querySelector('span').textContent = '刷新中...';
+                    // 刷新报表内容以显示旧数据，同时等待新数据
+                    powerBIFrame.contentWindow.location.reload(); 
+                    break;
+                case 'success':
+                    statusArea.classList.add('bg-green-100', 'text-green-800');
+                    refreshButton.disabled = false;
+                    refreshButton.querySelector('span').textContent = '刷新数据集';
+                    // 刷新报表内容以拉取新的数据集
+                    powerBIFrame.contentWindow.location.reload(); 
+                    break;
+                case 'error':
+                    statusArea.classList.add('bg-red-100', 'text-red-800');
+                    refreshButton.disabled = false;
+                    refreshButton.querySelector('span').textContent = '刷新数据集';
+                    break;
+                case 'info':
+                default:
+                    statusArea.classList.add('bg-gray-100');
+                    refreshButton.disabled = false;
+                    refreshButton.querySelector('span').textContent = '刷新数据集';
+                    break;
+            }
+        }
+
+        async function handleRefresh() {
+            if (REFRESH_API_URL.includes("your-ngrok-tunnel-address")) {
+                updateStatus('error', 'API URL 配置错误', '请修改代码中的 REFRESH_API_URL 变量为您的实际 ngrok 地址！');
+                return;
+            }
+
+            // 1. 设置为加载中状态
+            updateStatus('loading', '已发送刷新请求...', '等待后台脚本执行和 Power BI 数据集刷新完成...');
+
+            try {
+                // 2. 发送请求给 ngrok/后台服务
+                const response = await fetch(REFRESH_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    // 如果需要向 Python 脚本传递任何参数，可以在 body 中添加
+                    body: JSON.stringify({ dataset: 'YLshopdata_Check_Dataset' }) 
+                });
+
+                // 3. 处理响应
+                if (response.ok) {
+                    // 假设 ngrok 后台服务在刷新成功后返回 OK (200)
+                    const resultText = await response.text();
+                    updateStatus('success', '✅ 数据集刷新成功并已确认！', '报表已自动重新加载以显示最新数据。');
+                    console.log("Refresh command succeeded:", resultText);
+                } else {
+                    const errorText = await response.text();
+                    updateStatus('error', `❌ 刷新请求失败 (${response.status} 状态码)`, `服务器响应: ${errorText}`);
+                }
+            } catch (error) {
+                // 4. 处理网络错误 (如 ngrok 隧道未运行)
+                updateStatus('error', '⚠️ 刷新请求失败 (网络错误)', `无法连接到 API 地址。请检查您的 ngrok 隧道是否正在运行且 URL 配置正确。详情: ${error.message}`);
+            }
+            
+            // 恢复按钮状态，但如果成功，状态函数内部已处理
+            if (statusArea.classList.contains('animate-pulse')) {
+                updateStatus('info', '点击“刷新数据集”按钮以启动后台数据刷新。');
+            }
+        }
+
+        refreshButton.addEventListener('click', handleRefresh);
+
+        // 页面加载时显示初始状态
+        window.onload = () => {
+             updateStatus('info', '欢迎使用 Power BI 刷新工具', '请确保您的 ngrok 隧道和 Python 脚本正在运行，并替换 REFRESH_API_URL。');
+        };
+    </script>
+</body>
+</html>
