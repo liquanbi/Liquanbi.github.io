@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠氏pso by 客户表现 - 深度分析报告</title>
+    <!-- Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #334155;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+        }
+        .section-bg-1 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .section-bg-2 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') left bottom/30% no-repeat; }
+        .section-bg-3 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .shadow-soft { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+        .border-gradient {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white), linear-gradient(135deg, #3b82f6, #1e40af);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        /* Ensure Mermaid diagrams look good */
+        .mermaid { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; display: flex; justify-content: center; }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠氏PSO线上渠道布局战略分析报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        :root {
+            --mck-navy: #051C2C;
+            --mck-blue: #0077C8;
+            --mck-gray: #F5F7FA;
+            --mck-slate: #64748B;
+            --mck-green: #059669;
+            --mck-red: #DC2626;
+        }
+        body { font-family: 'Inter', 'system-ui', sans-serif; background-color: var(--mck-gray); color: var(--mck-navy); }
+        .mck-card { background: white; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .mck-border-left { border-left: 4px solid var(--mck-blue); }
+        .section-title { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid var(--mck-navy); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        .kpi-value { font-size: 1.875rem; font-weight: 700; color: var(--mck-navy); }
+        .kpi-label { font-size: 0.875rem; color: var(--mck-slate); font-weight: 600; }
+        .trend-up { color: var(--mck-green); font-size: 0.875rem; }
+        .trend-down { color: var(--mck-red); font-size: 0.875rem; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <!-- Header & Action Title -->
+    <header class="max-w-7xl mx-auto mb-10">
+        <div class="flex justify-between items-start mb-6">
+            <div class="bg-navy text-white px-4 py-1 text-xs font-bold bg-[#051C2C]">STRATEGIC ANALYSIS</div>
+            <div class="text-right text-xs text-slate-500">报告周期: 2025/12/22 ~ 2025/12/28</div>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold leading-tight border-l-8 border-[#0077C8] pl-6 italic">
+            惠氏线上布局呈现“高开低走”转化瓶颈：OLA铺货率与动销转化显著滞后于开店执行。
+        </h1>
+        <p class="mt-4 text-slate-600 max-w-3xl text-lg">
+            核心结论：全渠道开店达成率均值达88%，但OLA铺货率（48%）与动销率（24%）的断层式下跌，表明渠道布局已完成物理覆盖，但由于产品活性不足及精细化运营缺失，流量转化效能亟待提升。
+        </p>
+    </header>
+
+    <!-- KPI Dashboard -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div class="mck-card p-6 mck-border-left">
+            <div class="kpi-label uppercase">线上开店达成率 (AVG)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value">87.8%</span>
+                <span class="trend-down"><i class="fas fa-caret-down"></i> 1.4%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">物美、沃尔玛波动剧烈</p>
+        </div>
+        <div class="mck-card p-6 mck-border-left">
+            <div class="kpi-label uppercase">OLA 铺货达成率 (AVG)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value">47.8%</span>
+                <span class="trend-down"><i class="fas fa-caret-down"></i> 0.9%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">华东区表现最佳 (55%)</p>
+        </div>
+        <div class="mck-card p-6 mck-border-left">
+            <div class="kpi-label uppercase">产品动销率 (AVG)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value">24.0%</span>
+                <span class="trend-down"><i class="fas fa-caret-down"></i> 0.8%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">新世纪重百动销仅 6%</p>
+        </div>
+        <div class="mck-card p-6 mck-border-left border-l-[#059669]">
+            <div class="kpi-label uppercase">核心增长引擎 (TOP1)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value text-[#059669]">孩子王</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">销量贡献与铺货率双领先</p>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- Analysis A: Conversion Funnel -->
+        <div class="lg:col-span-8 mck-card p-8">
+            <h2 class="section-title">核心客户“开店-铺货-动销”全链路执行矩阵</h2>
+            <div class="h-[400px]">
+                <canvas id="customerChart"></canvas>
+            </div>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+                <div class="p-4 bg-gray-50 rounded">
+                    <span class="block font-bold text-[#051C2C]">异常预警：</span>
+                    <p class="text-sm text-slate-600 italic">物美开店率环比大幅下降 24.3%，且OLA铺货率仅 2%，处于渠道停滞状态。</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded">
+                    <span class="block font-bold text-[#0077C8]">效能标杆：</span>
+                    <p class="text-sm text-slate-600 italic">爱婴室 OLA 达成率 (65%) 配合动销改善，体现了高质量的渠道下沉能力。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis B: Regional Performance -->
+        <div class="lg:col-span-4 mck-card p-8">
+            <h2 class="section-title">大区效率分布 (OLA vs 动销)</h2>
+            <div class="h-[350px]">
+                <canvas id="areaRadarChart"></canvas>
+            </div>
+            <ul class="mt-8 space-y-4">
+                <li class="flex items-center justify-between text-sm border-b pb-2">
+                    <span class="font-semibold">华东区</span>
+                    <span class="text-emerald-600">领先 (28% 动销)</span>
+                </li>
+                <li class="flex items-center justify-between text-sm border-b pb-2">
+                    <span class="font-semibold">华北区</span>
+                    <span class="text-red-500">滞后 (19% 动销)</span>
+                </li>
+                <li class="flex items-center justify-between text-sm border-b pb-2">
+                    <span class="font-semibold">华南区</span>
+                    <span class="text-slate-500">平稳 (51% OLA)</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Analysis C: City Efficiency Table -->
+        <div class="lg:col-span-12 mck-card p-8 mb-10">
+            <h2 class="section-title">TOP 城市执行效率排行榜</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-100 text-[#051C2C]">
+                            <th class="p-4">城市</th>
+                            <th class="p-4 text-right">上翻目标</th>
+                            <th class="p-4 text-right">开店达成率</th>
+                            <th class="p-4 text-right">OLA 达成率</th>
+                            <th class="p-4 text-right">动销率</th>
+                            <th class="p-4">效率评价</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        <tr><td class="p-4 font-bold">北京市</td><td class="p-4 text-right">706</td><td class="p-4 text-right">92%</td><td class="p-4 text-right text-red-500">32%</td><td class="p-4 text-right">25%</td><td class="p-4"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">铺货瓶颈</span></td></tr>
+                        <tr><td class="p-4 font-bold">深圳市</td><td class="p-4 text-right">397</td><td class="p-4 text-right">92%</td><td class="p-4 text-right">50%</td><td class="p-4 text-right text-emerald-600">34%</td><td class="p-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">高转化</span></td></tr>
+                        <tr><td class="p-4 font-bold">上海市</td><td class="p-4 text-right">470</td><td class="p-4 text-right">90%</td><td class="p-4 text-right font-bold text-blue-600">62%</td><td class="p-4 text-right font-bold text-blue-600">33%</td><td class="p-4"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">执行标杆</span></td></tr>
+                        <tr><td class="p-4 font-bold">重庆市</td><td class="p-4 text-right">433</td><td class="p-4 text-right">91%</td><td class="p-4 text-right">38%</td><td class="p-4 text-right">19%</td><td class="p-4"><span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">亟待优化</span></td></tr>
+                        <tr><td class="p-4 font-bold">武汉市</td><td class="p-4 text-right">348</td><td class="p-4 text-right">92%</td><td class="p-4 text-right">50%</td><td class="p-4 text-right">27%</td><td class="p-4"><span class="bg-slate-100 text-slate-800 px-2 py-1 rounded text-xs">表现平稳</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer / Recommendations -->
+    <footer class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+        <div class="bg-[#051C2C] text-white p-6 rounded">
+            <h3 class="font-bold mb-2 flex items-center"><i class="fas fa-bullseye mr-2"></i> 紧抓 OLA 补货</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">针对 OLA 达成率低于 40% 的客户（如物美、新世纪重百、沃尔玛），需立即启动 SKU 铺货专项行动，解决“有店无货”现状。</p>
+        </div>
+        <div class="bg-[#0077C8] text-white p-6 rounded">
+            <h3 class="font-bold mb-2 flex items-center"><i class="fas fa-chart-line mr-2"></i> 动销效率优化</h3>
+            <p class="text-xs text-slate-100 leading-relaxed">北方大区及重庆地区动销率显著低于平均值，应通过线上联动营销或平台优惠策略，激活终端流量。</p>
+        </div>
+        <div class="bg-white border p-6 rounded">
+            <h3 class="font-bold mb-2 flex items-center text-[#051C2C]"><i class="fas fa-exclamation-triangle mr-2 text-red-500"></i> 开店回退预警</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">物美及沃尔玛线上开店率环比大幅下滑，疑似平台维护或账号合规问题，需各区域经理在 48 小时内完成异常排查。</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Configuration
+        const customers = ["孩子王", "爱婴室", "乐友达康", "沃尔玛", "大润发", "麦德龙", "新世纪", "爱婴岛", "物美"];
+        const shopOpening = [96, 94, 89, 92, 85, 91, 94, 90, 95];
+        const olaRates = [59, 65, 45, 30, 64, 68, 28, 53, 2];
+        const sellThrough = [37, 33, 12, 18, 29, 25, 6, 8, 14];
+
+        // Chart.js Configuration
+        Chart.register(ChartDataLabels);
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748B';
+
+        // 1. Customer Performance Chart
+        new Chart(document.getElementById('customerChart'), {
+            type: 'bar',
+            data: {
+                labels: customers,
+                datasets: [
+                    {
+                        label: '开店达成率 (%)',
+                        data: shopOpening,
+                        backgroundColor: '#E2E8F0',
+                        order: 3
+                    },
+                    {
+                        label: 'OLA 达成率 (%)',
+                        data: olaRates,
+                        backgroundColor: '#0077C8',
+                        order: 2
+                    },
+                    {
+                        label: '动销率 (%)',
+                        type: 'line',
+                        data: sellThrough,
+                        borderColor: '#DC2626',
+                        backgroundColor: '#DC2626',
+                        borderWidth: 3,
+                        pointStyle: 'circle',
+                        pointRadius: 5,
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true } },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        color: '#051C2C',
+                        font: { weight: 'bold', size: 10 },
+                        formatter: (v) => v + '%'
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 110, grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 2. Regional Efficiency Radar
+        new Chart(document.getElementById('areaRadarChart'), {
+            type: 'radar',
+            data: {
+                labels: ['华东区', '华南区', '华北区', '华西区'],
+                datasets: [
+                    {
+                        label: 'OLA 达成',
+                        data: [55, 51, 41, 43],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 119, 200, 0.2)',
+                        borderColor: '#0077C8',
+                        pointBackgroundColor: '#0077C8'
+                    },
+                    {
+                        label: '动销率',
+                        data: [28, 27, 19, 22],
+                        fill: true,
+                        backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                        borderColor: '#059669',
+                        pointBackgroundColor: '#059669'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                elements: { line: { tension: 0.1 } },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 60
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html><html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠氏PSO线上渠道布局战略分析报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        :root {
+            --mck-navy: #051C2C;
+            --mck-blue: #0077C8;
+            --mck-gray: #F5F7FA;
+            --mck-slate: #64748B;
+            --mck-green: #059669;
+            --mck-red: #DC2626;
+        }
+        body { font-family: 'Inter', 'system-ui', sans-serif; background-color: var(--mck-gray); color: var(--mck-navy); }
+        .mck-card { background: white; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .mck-border-left { border-left: 4px solid var(--mck-blue); }
+        .section-title { font-size: 1.25rem; font-weight: 700; border-bottom: 2px solid var(--mck-navy); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        .kpi-value { font-size: 1.875rem; font-weight: 700; color: var(--mck-navy); }
+        .kpi-label { font-size: 0.875rem; color: var(--mck-slate); font-weight: 600; }
+        .trend-up { color: var(--mck-green); font-size: 0.875rem; }
+        .trend-down { color: var(--mck-red); font-size: 0.875rem; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+    <!-- Header & Action Title -->
+    <header class="max-w-7xl mx-auto mb-10">
+        <div class="flex justify-between items-start mb-6">
+            <div class="bg-navy text-white px-4 py-1 text-xs font-bold bg-[#051C2C]">STRATEGIC ANALYSIS</div>
+            <div class="text-right text-xs text-slate-500">报告周期: 2025/12/22 ~ 2025/12/28</div>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold leading-tight border-l-8 border-[#0077C8] pl-6 italic">
+            惠氏线上布局呈现“高开低走”转化瓶颈：OLA铺货率与动销转化显著滞后于开店执行。
+        </h1>
+        <p class="mt-4 text-slate-600 max-w-3xl text-lg">
+            核心结论：全渠道开店达成率均值达88%，但OLA铺货率（48%）与动销率（24%）的断层式下跌，表明渠道布局已完成物理覆盖，但由于产品活性不足及精细化运营缺失，流量转化效能亟待提升。
+        </p>
+    </header>
+
+    <!-- KPI Dashboard -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <div class="mck-card p-6 mck-border-left">
+            <div class="kpi-label uppercase">线上开店达成率 (AVG)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value">87.8%</span>
+                <span class="trend-down"><i class="fas fa-caret-down"></i> 1.4%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">物美、沃尔玛波动剧烈</p>
+        </div>
+        <div class="mck-card p-6 mck-border-left">
+            <div class="kpi-label uppercase">OLA 铺货达成率 (AVG)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value">47.8%</span>
+                <span class="trend-down"><i class="fas fa-caret-down"></i> 0.9%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">华东区表现最佳 (55%)</p>
+        </div>
+        <div class="mck-card p-6 mck-border-left">
+            <div class="kpi-label uppercase">产品动销率 (AVG)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value">24.0%</span>
+                <span class="trend-down"><i class="fas fa-caret-down"></i> 0.8%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">新世纪重百动销仅 6%</p>
+        </div>
+        <div class="mck-card p-6 mck-border-left border-l-[#059669]">
+            <div class="kpi-label uppercase">核心增长引擎 (TOP1)</div>
+            <div class="flex items-baseline space-x-2">
+                <span class="kpi-value text-[#059669]">孩子王</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">销量贡献与铺货率双领先</p>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- Analysis A: Conversion Funnel -->
+        <div class="lg:col-span-8 mck-card p-8">
+            <h2 class="section-title">核心客户“开店-铺货-动销”全链路执行矩阵</h2>
+            <div class="h-[400px]">
+                <canvas id="customerChart"></canvas>
+            </div>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+                <div class="p-4 bg-gray-50 rounded">
+                    <span class="block font-bold text-[#051C2C]">异常预警：</span>
+                    <p class="text-sm text-slate-600 italic">物美开店率环比大幅下降 24.3%，且OLA铺货率仅 2%，处于渠道停滞状态。</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded">
+                    <span class="block font-bold text-[#0077C8]">效能标杆：</span>
+                    <p class="text-sm text-slate-600 italic">爱婴室 OLA 达成率 (65%) 配合动销改善，体现了高质量的渠道下沉能力。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis B: Regional Performance -->
+        <div class="lg:col-span-4 mck-card p-8">
+            <h2 class="section-title">大区效率分布 (OLA vs 动销)</h2>
+            <div class="h-[350px]">
+                <canvas id="areaRadarChart"></canvas>
+            </div>
+            <ul class="mt-8 space-y-4">
+                <li class="flex items-center justify-between text-sm border-b pb-2">
+                    <span class="font-semibold">华东区</span>
+                    <span class="text-emerald-600">领先 (28% 动销)</span>
+                </li>
+                <li class="flex items-center justify-between text-sm border-b pb-2">
+                    <span class="font-semibold">华北区</span>
+                    <span class="text-red-500">滞后 (19% 动销)</span>
+                </li>
+                <li class="flex items-center justify-between text-sm border-b pb-2">
+                    <span class="font-semibold">华南区</span>
+                    <span class="text-slate-500">平稳 (51% OLA)</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Analysis C: City Efficiency Table -->
+        <div class="lg:col-span-12 mck-card p-8 mb-10">
+            <h2 class="section-title">TOP 城市执行效率排行榜</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-100 text-[#051C2C]">
+                            <th class="p-4">城市</th>
+                            <th class="p-4 text-right">上翻目标</th>
+                            <th class="p-4 text-right">开店达成率</th>
+                            <th class="p-4 text-right">OLA 达成率</th>
+                            <th class="p-4 text-right">动销率</th>
+                            <th class="p-4">效率评价</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        <tr><td class="p-4 font-bold">北京市</td><td class="p-4 text-right">706</td><td class="p-4 text-right">92%</td><td class="p-4 text-right text-red-500">32%</td><td class="p-4 text-right">25%</td><td class="p-4"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">铺货瓶颈</span></td></tr>
+                        <tr><td class="p-4 font-bold">深圳市</td><td class="p-4 text-right">397</td><td class="p-4 text-right">92%</td><td class="p-4 text-right">50%</td><td class="p-4 text-right text-emerald-600">34%</td><td class="p-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">高转化</span></td></tr>
+                        <tr><td class="p-4 font-bold">上海市</td><td class="p-4 text-right">470</td><td class="p-4 text-right">90%</td><td class="p-4 text-right font-bold text-blue-600">62%</td><td class="p-4 text-right font-bold text-blue-600">33%</td><td class="p-4"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">执行标杆</span></td></tr>
+                        <tr><td class="p-4 font-bold">重庆市</td><td class="p-4 text-right">433</td><td class="p-4 text-right">91%</td><td class="p-4 text-right">38%</td><td class="p-4 text-right">19%</td><td class="p-4"><span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">亟待优化</span></td></tr>
+                        <tr><td class="p-4 font-bold">武汉市</td><td class="p-4 text-right">348</td><td class="p-4 text-right">92%</td><td class="p-4 text-right">50%</td><td class="p-4 text-right">27%</td><td class="p-4"><span class="bg-slate-100 text-slate-800 px-2 py-1 rounded text-xs">表现平稳</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer / Recommendations -->
+    <footer class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+        <div class="bg-[#051C2C] text-white p-6 rounded">
+            <h3 class="font-bold mb-2 flex items-center"><i class="fas fa-bullseye mr-2"></i> 紧抓 OLA 补货</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">针对 OLA 达成率低于 40% 的客户（如物美、新世纪重百、沃尔玛），需立即启动 SKU 铺货专项行动，解决“有店无货”现状。</p>
+        </div>
+        <div class="bg-[#0077C8] text-white p-6 rounded">
+            <h3 class="font-bold mb-2 flex items-center"><i class="fas fa-chart-line mr-2"></i> 动销效率优化</h3>
+            <p class="text-xs text-slate-100 leading-relaxed">北方大区及重庆地区动销率显著低于平均值，应通过线上联动营销或平台优惠策略，激活终端流量。</p>
+        </div>
+        <div class="bg-white border p-6 rounded">
+            <h3 class="font-bold mb-2 flex items-center text-[#051C2C]"><i class="fas fa-exclamation-triangle mr-2 text-red-500"></i> 开店回退预警</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">物美及沃尔玛线上开店率环比大幅下滑，疑似平台维护或账号合规问题，需各区域经理在 48 小时内完成异常排查。</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Configuration
+        const customers = ["孩子王", "爱婴室", "乐友达康", "沃尔玛", "大润发", "麦德龙", "新世纪", "爱婴岛", "物美"];
+        const shopOpening = [96, 94, 89, 92, 85, 91, 94, 90, 95];
+        const olaRates = [59, 65, 45, 30, 64, 68, 28, 53, 2];
+        const sellThrough = [37, 33, 12, 18, 29, 25, 6, 8, 14];
+
+        // Chart.js Configuration
+        Chart.register(ChartDataLabels);
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748B';
+
+        // 1. Customer Performance Chart
+        new Chart(document.getElementById('customerChart'), {
+            type: 'bar',
+            data: {
+                labels: customers,
+                datasets: [
+                    {
+                        label: '开店达成率 (%)',
+                        data: shopOpening,
+                        backgroundColor: '#E2E8F0',
+                        order: 3
+                    },
+                    {
+                        label: 'OLA 达成率 (%)',
+                        data: olaRates,
+                        backgroundColor: '#0077C8',
+                        order: 2
+                    },
+                    {
+                        label: '动销率 (%)',
+                        type: 'line',
+                        data: sellThrough,
+                        borderColor: '#DC2626',
+                        backgroundColor: '#DC2626',
+                        borderWidth: 3,
+                        pointStyle: 'circle',
+                        pointRadius: 5,
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true } },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        color: '#051C2C',
+                        font: { weight: 'bold', size: 10 },
+                        formatter: (v) => v + '%'
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 110, grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 2. Regional Efficiency Radar
+        new Chart(document.getElementById('areaRadarChart'), {
+            type: 'radar',
+            data: {
+                labels: ['华东区', '华南区', '华北区', '华西区'],
+                datasets: [
+                    {
+                        label: 'OLA 达成',
+                        data: [55, 51, 41, 43],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 119, 200, 0.2)',
+                        borderColor: '#0077C8',
+                        pointBackgroundColor: '#0077C8'
+                    },
+                    {
+                        label: '动销率',
+                        data: [28, 27, 19, 22],
+                        fill: true,
+                        backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                        borderColor: '#059669',
+                        pointBackgroundColor: '#059669'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                elements: { line: { tension: 0.1 } },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 60
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+        
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-slate-300 text-center text-slate-500 text-sm">
+            <p>本报告由 AI 数据分析系统生成 | 项目：惠氏pso by 客户表现 | 生成日期：<span id="currentDate"></span></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+</body>
+</html>

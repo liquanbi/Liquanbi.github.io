@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠氏pso by 客户表现 - 深度分析报告</title>
+    <!-- Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #334155;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+        }
+        .section-bg-1 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .section-bg-2 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') left bottom/30% no-repeat; }
+        .section-bg-3 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .shadow-soft { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+        .border-gradient {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white), linear-gradient(135deg, #3b82f6, #1e40af);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        /* Ensure Mermaid diagrams look good */
+        .mermaid { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; display: flex; justify-content: center; }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠氏 PSO 战略执行分析报告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #F5F7FA;
+            color: #051C2C;
+        }
+        .mck-title { border-left: 4px solid #0077C8; padding-left: 1rem; }
+        .card { background: #FFFFFF; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .positive { color: #059669; }
+        .negative { color: #DC2626; }
+        .chart-container { position: relative; width: 100%; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="mb-8">
+        <div class="flex justify-between items-start mb-4">
+            <h1 class="text-3xl font-bold text-[#051C2C] max-w-4xl">
+                惠氏线上渠道布局已初步成型，需重点攻坚铺货效率（OLA）与动销转化以实现终端销售突围
+            </h1>
+            <div class="text-right">
+                <p class="text-sm text-slate-500 italic">INTERNAL STRATEGY - Q4 2025</p>
+                <p class="text-xs text-slate-400">Reporting Period: 2025/12/22 - 12/28</p>
+            </div>
+        </div>
+        <div class="h-1 bg-[#051C2C] w-full"></div>
+    </header>
+
+    <!-- KPI Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="card p-5">
+            <p class="text-slate-500 text-sm font-semibold uppercase">线上开店上翻达成率</p>
+            <div class="flex items-end justify-between mt-2">
+                <span class="text-3xl font-bold">89.5%</span>
+                <span class="negative text-sm font-bold"><i class="fas fa-caret-down"></i> 1.2%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">核心准入指标，维持高位震荡</p>
+        </div>
+        <div class="card p-5">
+            <p class="text-slate-500 text-sm font-semibold uppercase">OLA 铺货达成率</p>
+            <div class="flex items-end justify-between mt-2">
+                <span class="text-3xl font-bold">44.3%</span>
+                <span class="negative text-sm font-bold"><i class="fas fa-caret-down"></i> 0.8%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">当前业务瓶颈，产品渗透率不足</p>
+        </div>
+        <div class="card p-5">
+            <p class="text-slate-500 text-sm font-semibold uppercase">平均动销率</p>
+            <div class="flex items-end justify-between mt-2">
+                <span class="text-3xl font-bold">21.1%</span>
+                <span class="negative text-sm font-bold"><i class="fas fa-caret-down"></i> 1.4%</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">布局最终验证，亟需活动拉动</p>
+        </div>
+        <div class="card p-5 bg-[#051C2C] text-white">
+            <p class="text-slate-300 text-sm font-semibold uppercase">待优化目标缺口</p>
+            <div class="flex items-end justify-between mt-2">
+                <span class="text-3xl font-bold">1.2W+</span>
+                <span class="text-sm font-bold text-[#0077C8]">SKU/Store</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-2">聚焦物美/乐友等异常客户</p>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Customer Performance -->
+        <div class="lg:col-span-8 flex flex-col gap-6">
+            <div class="card p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold mck-title">核心客户执行漏斗：从开店到动销的转化路径分析</h2>
+                </div>
+                <div class="chart-container aspect-[2/1]">
+                    <canvas id="customerFunnelChart"></canvas>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="bg-slate-50 p-3 border-l-4 border-[#0077C8]">
+                        <p class="text-sm font-bold">高执行标杆：爱婴室</p>
+                        <p class="text-xs text-slate-600">上翻(94%) & OLA(65%) 双领先，动销效率稳居前三。</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 border-l-4 border-red-500">
+                        <p class="text-sm font-bold">严重失衡预警：物美</p>
+                        <p class="text-xs text-slate-600">上翻率达95%但OLA仅2%，存在严重的“有名无实”开店现象。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h2 class="text-xl font-bold mb-6 mck-title">各大区 PSO 表现矩阵：规模 vs. 效率</h2>
+                <div class="chart-container aspect-[16/7]">
+                    <canvas id="areaPerformanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: City Rankings & Insights -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            <div class="card p-6">
+                <h2 class="text-lg font-bold mb-4">城市动销率排行榜 (Top 10)</h2>
+                <div class="space-y-4">
+                    <!-- City Item -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 bg-[#051C2C] text-white text-xs flex items-center justify-center rounded-full">1</span>
+                            <span class="text-sm font-medium">深圳市</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold">34%</p>
+                            <p class="text-[10px] negative">-0.2% WoW</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 bg-[#051C2C] text-white text-xs flex items-center justify-center rounded-full">2</span>
+                            <span class="text-sm font-medium">广州市</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold">34%</p>
+                            <p class="text-[10px] negative">-1.5% WoW</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 bg-[#051C2C] text-white text-xs flex items-center justify-center rounded-full">3</span>
+                            <span class="text-sm font-medium">长沙市</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold">34%</p>
+                            <p class="text-[10px] negative">-1.0% WoW</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 bg-slate-200 text-slate-600 text-xs flex items-center justify-center rounded-full">4</span>
+                            <span class="text-sm font-medium">上海市</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold">33%</p>
+                            <p class="text-[10px] negative">-1.4% WoW</p>
+                        </div>
+                    </div>
+                     <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 h-6 bg-slate-200 text-slate-600 text-xs flex items-center justify-center rounded-full">5</span>
+                            <span class="text-sm font-medium">杭州市</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold">31%</p>
+                            <p class="text-[10px] positive">+0.2% WoW</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-dashed">
+                    <h3 class="text-sm font-bold mb-2 uppercase text-slate-400 tracking-wider">Strategic Insights</h3>
+                    <ul class="text-xs space-y-3 text-slate-600 leading-relaxed">
+                        <li><i class="fas fa-check-circle text-[#0077C8] mr-2"></i><strong>渠道分化：</strong> 孩子王/爱婴室等母婴渠道OLA达成率显著优于物美/大润发等KA渠道，显示出专业渠道对SKU铺货的更高配合度。</li>
+                        <li><i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i><strong>转化瓶颈：</strong> 上翻达成率普遍在90%左右，但动销率中位数仅22%，说明“开店”后的流量运营与产品上架（OLA）存在严重断层。</li>
+                        <li><i class="fas fa-lightbulb text-yellow-500 mr-2"></i><strong>地域差异：</strong> 华东区在OLA达成率（55%）领跑，应总结华东经验向华北（41%）及华西（43%）推广。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Common Chart Config
+        const chartColors = {
+            primary: '#051C2C',
+            highlight: '#0077C8',
+            slate: '#94A3B8',
+            emerald: '#059669',
+            red: '#DC2626'
+        };
+
+        // 1. Customer Funnel Chart
+        const ctxFunnel = document.getElementById('customerFunnelChart').getContext('2d');
+        new Chart(ctxFunnel, {
+            type: 'bar',
+            data: {
+                labels: ['孩子王', '爱婴室', '乐友', '沃尔玛', '大润发', '麦德龙', '爱婴岛', '物美'],
+                datasets: [
+                    {
+                        label: '上翻达成率',
+                        data: [96, 94, 89, 92, 85, 91, 90, 95],
+                        backgroundColor: chartColors.primary,
+                    },
+                    {
+                        label: 'OLA 达成率',
+                        data: [59, 65, 45, 30, 64, 68, 53, 2],
+                        backgroundColor: chartColors.highlight,
+                    },
+                    {
+                        label: '动销率',
+                        data: [37, 33, 12, 18, 29, 25, 8, 14],
+                        backgroundColor: '#CBD5E1',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        max: 100,
+                        ticks: { callback: v => v + '%' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 2. Area Performance Matrix (Bubble-style chart using scatter)
+        const ctxArea = document.getElementById('areaPerformanceChart').getContext('2d');
+        new Chart(ctxArea, {
+            type: 'bubble',
+            data: {
+                datasets: [
+                    {
+                        label: '华东区',
+                        data: [{ x: 55, y: 28, r: 18 }], // x: OLA, y: 动销, r: 上翻目标规模
+                        backgroundColor: 'rgba(5, 28, 44, 0.8)'
+                    },
+                    {
+                        label: '华南区',
+                        data: [{ x: 51, y: 27, r: 16 }],
+                        backgroundColor: 'rgba(0, 119, 200, 0.8)'
+                    },
+                    {
+                        label: '华北区',
+                        data: [{ x: 41, y: 19, r: 12 }],
+                        backgroundColor: 'rgba(100, 116, 139, 0.8)'
+                    },
+                    {
+                        label: '华西区',
+                        data: [{ x: 43, y: 22, r: 10 }],
+                        backgroundColor: 'rgba(203, 213, 225, 0.8)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'OLA 达成率 (%)', font: { weight: 'bold' } },
+                        min: 30,
+                        max: 70
+                    },
+                    y: {
+                        title: { display: true, text: '动销率 (%)', font: { weight: 'bold' } },
+                        min: 10,
+                        max: 40
+                    }
+                },
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': OLA ' + context.raw.x + '%, 动销 ' + context.raw.y + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+        
+        <!-- Footer -->
+        <footer class="mt-12 pt-8 border-t border-slate-300 text-center text-slate-500 text-sm">
+            <p>本报告由 AI 数据分析系统生成 | 项目：惠氏pso by 客户表现 | 生成日期：<span id="currentDate"></span></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+</body>
+</html>
