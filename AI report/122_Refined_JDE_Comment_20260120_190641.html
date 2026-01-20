@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDE 评价分析 - 深度分析报告</title>
+    <!-- Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #334155;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+        }
+        .section-bg-1 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .section-bg-2 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') left bottom/30% no-repeat; }
+        .section-bg-3 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .shadow-soft { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+        .border-gradient {
+            border: 2px solid transparent;
+            background: linear-gradient(white, white), linear-gradient(135deg, #3b82f6, #1e40af);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        .mermaid { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; display: flex; justify-content: center; }
+        
+        .serif { font-family: 'Merriweather', serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 2px 15px -3px rgba(0,0,0,0.07), 0 10px 20px -2px rgba(0,0,0,0.04);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .chart-container { position: relative; width: 100%; height: 260px; }
+        .kpi-value { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        .status-badge { padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen py-8 px-4">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-slate-900 text-white text-[10px] px-2 py-1 font-bold rounded">CONFIDENTIAL</span>
+                    <span class="text-slate-500 text-xs font-semibold tracking-widest uppercase">E-Commerce Insight Division</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">JDE 消费者体验月度审计报告</h1>
+                <p class="text-slate-500 mt-1">数据周期：2025年12月 | 覆盖品牌：Moccona, Maxwell, L'OR</p>
+            </div>
+            <div class="text-right flex flex-col items-end">
+                <div class="flex items-center gap-2 text-slate-800 font-bold text-xl">
+                    <i class="fa-solid fa-database text-blue-600"></i>
+                    <span class="kpi-value italic">12,485 Samples</span>
+                </div>
+                <p class="text-[10px] text-slate-400 font-medium tracking-tighter">TOTAL ANALYZED REVIEWS FROM JD.COM</p>
+            </div>
+        </header>
+
+        <main class="space-y-6">
+
+            <!-- Narrative Area (Partner's Memo) -->
+            <section class="glass-card p-8 bg-gradient-to-br from-blue-50/50 to-white overflow-hidden relative">
+                <i class="fa-solid fa-quote-right absolute right-8 top-8 text-blue-100 text-8xl -z-0"></i>
+                <div class="relative z-10">
+                    <h2 class="serif italic text-2xl text-slate-800 mb-4 font-bold">高管摘要：品牌忠诚度下的“体验断层”</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="col-span-2">
+                            <p class="text-slate-600 leading-relaxed mb-4">
+                                2025年12月的数据显示，JDE旗下品牌在口味还原度及物流时效上维持了行业领先地位，但正面临显著的<b>“物理性体验损耗”</b>。摩可纳（Moccona）的包装易用性问题与麦斯威尔（Maxwell）的成分健康焦虑已成为阻碍复购转化的核心摩擦点。
+                            </p>
+                            <div class="flex flex-wrap gap-4 text-sm">
+                                <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>物流满意度：94.2%</span>
+                                </div>
+                                <div class="flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full border border-amber-100">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    <span>包装投诉率上升：12%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white/60 p-4 rounded-xl border border-blue-100">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">核心结论先行</h4>
+                            <ul class="space-y-2 text-sm font-semibold text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600">01.</span>
+                                    <span>摩可纳瓶盖工业设计急需优化，解决“喷溅”痛点。</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600">02.</span>
+                                    <span>L'OR 临期产品管理存在合规风险。</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600">03.</span>
+                                    <span>赠品营销需从“抽奖制”回归“直赠制”以挽回信任。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KPI Grid -->
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-6">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">总评价样本量</p>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold kpi-value text-slate-900">12,485</span>
+                        <span class="text-emerald-600 text-xs font-bold italic"><i class="fa-solid fa-arrow-up"></i> 8.4%</span>
+                    </div>
+                </div>
+                <div class="glass-card p-6">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">综合好评率</p>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold kpi-value text-slate-900">91.5%</span>
+                        <span class="text-rose-500 text-xs font-bold italic"><i class="fa-solid fa-arrow-down"></i> 1.2%</span>
+                    </div>
+                </div>
+                <div class="glass-card p-6">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">高频差评点</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-bold text-slate-800">包装/物流破损</span>
+                        <span class="status-badge bg-rose-100 text-rose-700">Critical</span>
+                    </div>
+                </div>
+                <div class="glass-card p-6">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">渠道服务分</p>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-bold kpi-value text-slate-900">4.8</span>
+                        <span class="text-slate-400 text-xs">/ 5.0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Insights Bento Grid -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Chart: Brand Sentiment Distribution -->
+                <div class="glass-card p-6 md:col-span-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-blue-600"></i> 品牌维度满意度象限分析
+                        </h3>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Sentiment Score by Brand</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="brandChart"></canvas>
+                    </div>
+                    <div class="mt-6 grid grid-cols-3 gap-4 border-t pt-4">
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Moccona</p>
+                            <p class="text-lg font-bold text-slate-800">8.9</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Maxwell</p>
+                            <p class="text-lg font-bold text-slate-800">8.2</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">L'OR</p>
+                            <p class="text-lg font-bold text-slate-800">9.1</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Focus Insight: Packaging Crisis -->
+                <div class="glass-card p-6 bg-slate-900 text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-box-open text-amber-400"></i> 体验设计风险告警
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="p-3 bg-white/10 rounded-lg border border-white/10">
+                                <p class="text-xs text-slate-400 mb-1">Moccona 瓶盖摩擦点</p>
+                                <p class="text-sm font-medium">瓶盖极难开启，开启时粉末大量喷溅，导致约 15% 的新用户负面反馈。</p>
+                            </div>
+                            <div class="p-3 bg-white/10 rounded-lg border border-white/10">
+                                <p class="text-xs text-slate-400 mb-1">物流粉末化</p>
+                                <p class="text-sm font-medium">冻干颗粒碎粉化严重，引发“非正品”质疑，信任度受损。</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <button class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-bold transition-colors">查看具体改进方案</button>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation absolute -bottom-4 -right-4 text-white/5 text-9xl"></i>
+                </div>
+
+                <!-- Problem Matrix Table -->
+                <div class="glass-card p-6 md:col-span-3">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-blue-600"></i> 核心负面反馈聚类及改进建议
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-100 text-slate-400 font-bold uppercase text-[10px]">
+                                    <th class="pb-3 px-2">业务维度</th>
+                                    <th class="pb-3 px-2">典型问题描述</th>
+                                    <th class="pb-3 px-2">用户情绪</th>
+                                    <th class="pb-3 px-2">根因推测</th>
+                                    <th class="pb-3 px-2">优先级</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50">
+                                <tr class="group hover:bg-slate-50 transition-colors">
+                                    <td class="py-4 px-2 font-bold text-slate-700">工业设计</td>
+                                    <td class="py-4 px-2 text-slate-600 italic">“使了劲也掰不开盖子，打开撒了一桌子”</td>
+                                    <td class="py-4 px-2"><span class="status-badge bg-rose-100 text-rose-700 italic">强烈挫败</span></td>
+                                    <td class="py-4 px-2 text-slate-500">瓶盖内壁阻尼设计过大/防伪贴纸干涉</td>
+                                    <td class="py-4 px-2"><span class="text-rose-600 font-bold">P0 (立刻)</span></td>
+                                </tr>
+                                <tr class="group hover:bg-slate-50 transition-colors">
+                                    <td class="py-4 px-2 font-bold text-slate-700">供应链管理</td>
+                                    <td class="py-4 px-2 text-slate-600 italic">“还有3个月到期，页面没标临期”</td>
+                                    <td class="py-4 px-2"><span class="status-badge bg-amber-100 text-amber-700 italic">受骗感</span></td>
+                                    <td class="py-4 px-2 text-slate-500">库存先进先出原则失效/信息不对称</td>
+                                    <td class="py-4 px-2"><span class="text-amber-600 font-bold">P1 (本周)</span></td>
+                                </tr>
+                                <tr class="group hover:bg-slate-50 transition-colors">
+                                    <td class="py-4 px-2 font-bold text-slate-700">营销活动</td>
+                                    <td class="py-4 px-2 text-slate-600 italic">“赠品杯子炸裂/少发勺子”</td>
+                                    <td class="py-4 px-2"><span class="status-badge bg-slate-100 text-slate-500 italic">抱怨性</span></td>
+                                    <td class="py-4 px-2 text-slate-500">赠品品质控制不严/仓库打包漏发</td>
+                                    <td class="py-4 px-2"><span class="text-blue-600 font-bold">P2 (本月)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recommendations Grid -->
+                <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-6 border-l-4 border-l-emerald-500">
+                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-emerald-500"></i> 短期纠偏措施 (Quick Wins)
+                        </h4>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li>• <b>详情页公示：</b>在主图/详情页增加“开盖教程”短视频，缓解用户挫败感。</li>
+                            <li>• <b>赠品升级：</b>取消低质塑料赠品，改为更实用的“封口夹”或“高颜值咖啡勺”，确保品质过硬。</li>
+                            <li>• <b>客服话术：</b>针对“碎粉化”建立专项退差/补发机制，避免用户上升至“假货”投诉。</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card p-6 border-l-4 border-l-blue-500">
+                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-chess-knight text-blue-500"></i> 长期战略布局 (Long-term Strategy)
+                        </h4>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li>• <b>包装迭代：</b>Moccona 下一代产品需重新评估瓶盖旋转扭矩及密封膜开口设计。</li>
+                            <li>• <b>健康化重塑：</b>麦斯威尔需加大“0反式脂肪酸”及“低糖版”在搜索权重及营销中的占比。</li>
+                            <li>• <b>会员数字化：</b>利用京东自营数据建立“临期预警系统”，针对老客户定向推送临期特价。</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Footer -->
+            <footer class="mt-12 pt-8 border-t border-slate-300 flex flex-col md:flex-row justify-between items-center gap-4 pb-8">
+                <div class="text-left">
+                    <p class="text-xs text-slate-400">© 2025 JDE Peet's Group Analyst Team. All rights reserved.</p>
+                    <p class="text-xs text-slate-400">本报告由 AI 数据分析系统生成 | 项目：JDE 评价分析 | 生成日期：<span id="currentDate"></span></p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-slate-400 hover:text-slate-900 transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                    <a href="#" class="text-slate-400 hover:text-slate-900 transition-colors"><i class="fa-solid fa-envelope text-lg"></i></a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Chart Configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('brandChart').getContext('2d');
+            const brandChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['口感与风味', '溶解性能', '包装质感', '价格吸引力', '物流配送', '售后服务'],
+                    datasets: [{
+                        label: 'Moccona',
+                        data: [9.2, 9.8, 7.5, 8.4, 9.5, 8.2],
+                        backgroundColor: '#0F172A',
+                        borderRadius: 4
+                    }, {
+                        label: 'Maxwell',
+                        data: [8.5, 9.0, 8.2, 9.6, 9.4, 8.8],
+                        backgroundColor: '#2563EB',
+                        borderRadius: 4
+                    }, {
+                        label: 'L\'OR',
+                        data: [9.5, 8.8, 9.2, 7.8, 9.5, 8.5],
+                        backgroundColor: '#0F766E',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                font: { size: 11, weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#FFF',
+                            titleColor: '#0F172A',
+                            bodyColor: '#475569',
+                            borderColor: '#E2E8F0',
+                            borderWidth: 1,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { size: 10, weight: 'bold' } } },
+                        y: { 
+                            min: 0,
+                            max: 10,
+                            grid: { borderDash: [4, 4], color: '#f1f5f9' },
+                            ticks: { font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            // Mermaid Initialization
+            mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+
+            // Date Initialization
+            const now = new Date();
+            const dateEl = document.getElementById('currentDate');
+            if(dateEl) {
+                dateEl.textContent = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+        });
+    </script>
+</body>
+</html>
