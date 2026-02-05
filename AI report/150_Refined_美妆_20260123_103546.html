@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全渠道电商TOP品牌月度销售分析报告 - 美妆行业</title>
+    <!-- Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --mck-blue-dark: #051C2C;
+            --mck-blue-accent: #0077C8;
+            --mck-bg: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: var(--mck-bg);
+            color: #1E293B;
+            line-height: 1.6;
+        }
+
+        .mck-header-line {
+            height: 4px;
+            background: linear-gradient(90deg, var(--mck-blue-dark) 0%, var(--mck-blue-accent) 100%);
+        }
+
+        .mck-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mck-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .kpi-trend-up { color: #059669; background-color: #ECFDF5; }
+        .kpi-trend-down { color: #DC2626; background-color: #FEF2F2; }
+
+        /* .section-bg-accent {
+            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98)), 
+                        url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+        } */
+        
+        .mermaid { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; display: flex; justify-content: center; }
+        
+        canvas { max-width: 100%; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="mck-header-line"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-[#051C2C] tracking-tight">
+                        国货龙头借力抖音渠道重塑竞争格局，头部品牌在大促后周期呈现显著分化
+                    </h1>
+                    <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+                        <span class="bg-[#051C2C] text-white px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase">Confidential</span>
+                        <span class="flex items-center"><i class="far fa-calendar-alt mr-2"></i> 数据周期：2025年11月</span>
+                        <span class="flex items-center"><i class="fas fa-database mr-2"></i> 样本范围：全渠道TOP500品牌</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="px-4 py-2 text-xs font-semibold text-slate-600 border border-slate-300 rounded hover:bg-slate-50">
+                        <i class="fas fa-download mr-2"></i>导出报告
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- KPI Scorecard -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="mck-card p-5">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">TOP10 品牌总GMV</div>
+                <div class="flex items-end justify-between">
+                    <div class="text-3xl font-bold text-[#051C2C]">61.3<span class="text-lg font-medium text-slate-400 ml-1">亿</span></div>
+                    <div class="flex items-center text-xs font-bold kpi-trend-down px-2 py-1 rounded">
+                        <i class="fas fa-arrow-down mr-1"></i> 45.2%
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-50 text-xs text-slate-500">大促爆发期(10月)后正常回落</div>
+            </div>
+
+            <div class="mck-card p-5">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">TOP10 同比增速</div>
+                <div class="flex items-end justify-between">
+                    <div class="text-3xl font-bold text-[#051C2C]">+4.1<span class="text-lg font-medium text-slate-400 ml-1">%</span></div>
+                    <div class="flex items-center text-xs font-bold kpi-trend-up px-2 py-1 rounded">
+                        <i class="fas fa-arrow-up mr-1"></i> 稳健
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-50 text-xs text-slate-500">由于大促节奏前置，同比仍保持韧性</div>
+            </div>
+
+            <div class="mck-card p-5">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">珀莱雅市场份额(TOP10中)</div>
+                <div class="flex items-end justify-between">
+                    <div class="text-3xl font-bold text-[#051C2C]">14.7<span class="text-lg font-medium text-slate-400 ml-1">%</span></div>
+                    <div class="flex items-center text-xs font-bold text-[#0077C8] bg-blue-50 px-2 py-1 rounded">
+                        NO.1 领跑
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-50 text-xs text-slate-500">单月营收突破9亿元，超越国际大牌</div>
+            </div>
+
+            <div class="mck-card p-5">
+                <div class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">抖音渠道贡献率(TOP10)</div>
+                <div class="flex items-end justify-between">
+                    <div class="text-3xl font-bold text-[#051C2C]">32.8<span class="text-lg font-medium text-slate-400 ml-1">%</span></div>
+                    <div class="flex items-center text-xs font-bold kpi-trend-up px-2 py-1 rounded">
+                        <i class="fas fa-arrow-up mr-1"></i> 增长
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-50 text-xs text-slate-500">韩束单品牌抖音占比高达78%</div>
+            </div>
+        </section>
+
+        <!-- Main Chart Section: Leaderboard -->
+        <section class="mck-card p-6 md:p-8 section-bg-accent">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-lg font-bold text-[#051C2C]">TOP15 品牌全网销售规模与同比增长矩阵</h2>
+                    <p class="text-sm text-slate-500">跨平台聚合数据分析 (天猫、淘宝、京东、抖音)</p>
+                </div>
+                <div class="h-1 w-20 bg-[#0077C8] mt-2 md:mt-0"></div>
+            </div>
+
+            <div class="chart-container h-[400px]">
+                <canvas id="leaderboardChart"></canvas>
+            </div>
+
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white/50 p-4 rounded-lg border border-slate-100">
+                    <h4 class="font-bold text-[#051C2C] text-sm mb-3 flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#0077C8] mr-2"></span>现象描述
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        珀莱雅(Proya)以9.05亿元的月销额位居榜首，大幅领先第二名兰蔻(7.33亿元)和第三名欧莱雅(7.22亿元)。前15名中，国货品牌（珀莱雅、韩束、薇诺娜、可复美、袋鼠妈妈）占据5席，且韩束表现出极强的爆发力（6.83亿元）。
+                    </p>
+                </div>
+                <div class="bg-white/50 p-4 rounded-lg border border-slate-100">
+                    <h4 class="font-bold text-[#051C2C] text-sm mb-3 flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#0077C8] mr-2"></span>深层分析
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        国货品牌的崛起并非偶然，而是对"双11"后周期的承接能力更强。韩束同比去年增长16.2%，远超大盘，主要得益于其在抖音渠道的短剧营销闭环。相比之下，国际品牌如SK-II (-6.1%) 和雅诗兰黛 (-11.3%) 出现同比下滑，显示其品牌溢价在存量竞争中面临挑战。
+                    </p>
+                </div>
+                <div class="bg-white/50 p-4 rounded-lg border border-slate-100">
+                    <h4 class="font-bold text-[#051C2C] text-sm mb-3 flex items-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#0077C8] mr-2"></span>行动启示
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        国际品牌需重新审视定价策略与渠道分配，单纯依赖天猫的防御战已现疲态。建议立即启动针对抖音生态的差异化产品线（如更适合直播展示的套组），以对冲传统电商渠道的流量见顶风险。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secondary Charts: Composition and Bubble -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Channel Strategy -->
+            <div class="mck-card p-6 md:p-8">
+                <h2 class="text-lg font-bold text-[#051C2C] mb-1">头部品牌渠道依赖度分析</h2>
+                <p class="text-xs text-slate-500 mb-6">按GMV结构分布 (单位: %)</p>
+                <div class="chart-container h-[350px]">
+                    <canvas id="channelMixChart"></canvas>
+                </div>
+                <div class="mt-6 space-y-4">
+                    <div class="flex items-start bg-slate-50 p-3 rounded">
+                        <div class="w-2 h-2 mt-1.5 rounded-full bg-[#051C2C] mr-3 shrink-0"></div>
+                        <p class="text-[11px] text-slate-600"><strong>天猫阵地：</strong> 国际品牌（兰蔻、雅诗兰黛、海蓝之谜）天猫占比普遍在40%-50%，仍是品牌形象与高净值用户的主阵地。</p>
+                    </div>
+                    <div class="flex items-start bg-slate-50 p-3 rounded">
+                        <div class="w-2 h-2 mt-1.5 rounded-full bg-[#0077C8] mr-3 shrink-0"></div>
+                        <p class="text-[11px] text-slate-600"><strong>抖音突围：</strong> 韩束（78%）、袋鼠妈妈（62%）呈现"单腿走路"特征，高度依赖内容电商爆发，风险与机遇并存。</p>
+                    </div>
+                    <div class="flex items-start bg-slate-50 p-3 rounded">
+                        <div class="w-2 h-2 mt-1.5 rounded-full bg-[#059669] mr-3 shrink-0"></div>
+                        <p class="text-[11px] text-slate-600"><strong>均衡发展：</strong> 珀莱雅展现出最健康的渠道结构（天猫51%，抖音31%），实现了品牌力与流量的平衡。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bubble Chart -->
+            <div class="mck-card p-6 md:p-8">
+                <h2 class="text-lg font-bold text-[#051C2C] mb-1">品牌生命周期：规模与抗周期能力</h2>
+                <p class="text-xs text-slate-500 mb-6">横轴: GMV规模 | 纵轴: 同比增长 | 圆圈大小: 环比表现</p>
+                <div class="chart-container h-[350px]">
+                    <canvas id="growthBubbleChart"></canvas>
+                </div>
+                <div class="mt-6 space-y-4">
+                    <div class="flex items-start bg-green-50/50 p-3 rounded">
+                        <i class="fas fa-chart-line text-[#059669] mt-1 mr-3 shrink-0"></i>
+                        <p class="text-[11px] text-slate-600"><strong>逆势增长区（右上）：</strong> 珀莱雅、韩束在保持大规模的同时实现了同比正增长，证明了其产品矩阵的迭代能力。</p>
+                    </div>
+                    <div class="flex items-start bg-red-50/50 p-3 rounded">
+                        <i class="fas fa-exclamation-triangle text-[#DC2626] mt-1 mr-3 shrink-0"></i>
+                        <p class="text-[11px] text-slate-600"><strong>承压调整区（右下）：</strong> SK-II、雅诗兰黛规模虽大但同比下滑，这通常是品牌老化或价格体系崩塌的早期信号。</p>
+                    </div>
+                    <div class="flex items-start bg-blue-50/50 p-3 rounded">
+                        <i class="fas fa-lightbulb text-[#0077C8] mt-1 mr-3 shrink-0"></i>
+                        <p class="text-[11px] text-slate-600"><strong>战略建议：</strong> 处于下滑区间的品牌需在Q1立即调整营销预算结构，减少无效大促投放，转向品牌资产建设与高ROI渠道。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Recommendations -->
+        <section class="mck-card overflow-hidden">
+            <div class="bg-gradient-to-r from-[#051C2C] to-[#0A2E45] p-6 md:p-8 text-white">
+                <div class="flex items-center mb-6">
+                    <div class="w-10 h-10 rounded bg-[#0077C8] flex items-center justify-center mr-4">
+                        <i class="fas fa-chess-knight text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold">战略行动建议 (Strategic Imperatives)</h2>
+                        <p class="text-xs text-slate-400">基于2025年11月市场表现的专业判断</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="space-y-3">
+                        <div class="text-[#0077C8] font-bold text-xs tracking-tighter uppercase">01 立即行动 (Immediate)</div>
+                        <h3 class="font-bold text-base border-l-2 border-[#0077C8] pl-3">库存结构优化与价格维稳</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            针对11月MoM普遍下滑40%+的现象，品牌需在12月重点处理大促退货与长尾库存。严禁在直播间进行无底线破价，以免破坏Q4整体利润率与品牌价格锚点。
+                        </p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="text-[#0077C8] font-bold text-xs tracking-tighter uppercase">02 短期规划 (1-3 Months)</div>
+                        <h3 class="font-bold text-base border-l-2 border-[#0077C8] pl-3">复制"韩束模式"的内容飞轮</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            中腰部品牌应学习韩束在抖音的高占比策略，通过短剧+自播的组合拳，在春节档（1-2月）抢占流量真空期。对于国际品牌，需加速店铺自播（Self-broadcasting）的常态化运营。
+                        </p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="text-[#0077C8] font-bold text-xs tracking-tighter uppercase">03 长期战略 (Long Term)</div>
+                        <h3 class="font-bold text-base border-l-2 border-[#0077C8] pl-3">构建全渠道"反脆弱"体系</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            单一渠道依赖度超过60%（如部分抖品牌）存在极大平台政策风险。长期看必须向珀莱雅的"532"结构靠拢（天猫50%，抖音30%，京东/其他20%），确保经营的稳健性与可持续性。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="max-w-7xl mx-auto px-4 py-12 text-center">
+        <div class="flex justify-center mb-6">
+            <div class="h-px w-24 bg-slate-300"></div>
+        </div>
+        <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">本报告由 AI 数据分析系统生成 | 项目：美妆行业数据</p>
+        <p class="text-[10px] text-slate-400">&copy; 2025 Market Intelligence Analysis. Generated on <span id="currentDate"></span>. Internal Use Only.</p>
+    </footer>
+
+    <!-- Chart Configuration -->
+    <script>
+        // Data Extraction
+        const brandData = [
+            { name: "Proya/珀莱雅", tmall: 460424792, taobao: 34364231, jd: 132421508, douyin: 278572815, total: 905783348, mom: 1623422000, yoy: 873546646 },
+            { name: "Lancome/兰蔻", tmall: 360616428, taobao: 36797829, jd: 237022648, douyin: 98789744, total: 733226651, mom: 1265865000, yoy: 687303603 },
+            { name: "L'oreal/欧莱雅", tmall: 384573498, taobao: 11219636, jd: 170827745, douyin: 155939022, total: 722559903, mom: 1162989000, yoy: 870525452 },
+            { name: "Kans/韩束", tmall: 93835857, taobao: 8195813, jd: 46228591, douyin: 535484925, total: 683745187, mom: 816312900, yoy: 588281987 },
+            { name: "Estee Lauder/雅诗兰黛", tmall: 249089519, taobao: 62622593, jd: 174110610, douyin: 145328231, total: 631150956, mom: 1140735000, yoy: 712032669 },
+            { name: "La Mer/海蓝之谜", tmall: 292004104, taobao: 50486231, jd: 112387668, douyin: 135074765, total: 589952769, mom: 1004633000, yoy: 573408592 },
+            { name: "Helena/赫莲娜", tmall: 208333391, taobao: 23515471, jd: 132348086, douyin: 168518452, total: 532715401, mom: 747401200, yoy: 463977562 },
+            { name: "Olay/玉兰油", tmall: 256436082, taobao: 6356363, jd: 92208244, douyin: 127970671, total: 482971362, mom: 844767700, yoy: 523955570 },
+            { name: "SK-II", tmall: 233080211, taobao: 13350642, jd: 166650805, douyin: 55002123, total: 468083783, mom: 1122683000, yoy: 498754889 },
+            { name: "Skinceuticals/修丽可", tmall: 282502125, taobao: 33228963, jd: 81955772, douyin: 32974064, total: 430660926, mom: 1157628000, yoy: 366280882 },
+            { name: "Chando/自然堂", tmall: 144945535, taobao: 7923233, jd: 60922162, douyin: 195841098, total: 409632030, mom: 543086100, yoy: 367698092 },
+            { name: "Winona/薇诺娜", tmall: 189193221, taobao: 27695182, jd: 74005830, douyin: 101637546, total: 392531780, mom: 737369900, yoy: 382370968 },
+            { name: "Comfy/可复美", tmall: 173130466, taobao: 15277410, jd: 98925781, douyin: 79665831, total: 366999489, mom: 732742000, yoy: 426529557 },
+            { name: "Kangaroo Mommy/袋鼠妈妈", tmall: 85275395, taobao: 9386983, jd: 40073209, douyin: 218402732, total: 353138321, mom: 390546400, yoy: 310367105 },
+            { name: "Kiehl's/科颜氏", tmall: 191434118, taobao: 16286132, jd: 80938873, douyin: 31849565, total: 320508689, mom: 480041600, yoy: 338950064 }
+        ];
+
+        const brandNames = brandData.map(d => d.name.split('/')[1] || d.name);
+        const totalGMV = brandData.map(d => d.total / 100000000);
+        const yoyGrowth = brandData.map(d => ((d.total - d.yoy) / d.yoy * 100).toFixed(1));
+
+        Chart.defaults.font.family = "'Inter', 'Noto Sans SC'";
+        Chart.register(ChartDataLabels);
+
+        // 1. Leaderboard Chart
+        const ctx1 = document.getElementById('leaderboardChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: brandNames,
+                datasets: [
+                    {
+                        label: 'GMV (亿)',
+                        data: totalGMV,
+                        backgroundColor: '#051C2C',
+                        borderRadius: 4,
+                        order: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '同比增速 (%)',
+                        data: yoyGrowth,
+                        type: 'line',
+                        borderColor: '#0077C8',
+                        backgroundColor: '#0077C8',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        order: 1,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', align: 'end', labels: { boxWidth: 12, usePointStyle: true, font: { size: 10 } } },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        font: { size: 9, weight: 'bold' },
+                        formatter: (val, ctx) => ctx.dataset.type === 'line' ? val + '%' : val.toFixed(1),
+                        display: (ctx) => ctx.datasetIndex === 1 || ctx.dataIndex < 8
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+                    y: { position: 'left', title: { display: true, text: '亿元' }, grid: { borderDash: [5, 5] } },
+                    y1: { position: 'right', grid: { display: false }, title: { display: true, text: '百分比' } }
+                }
+            }
+        });
+
+        // 2. Channel Mix Chart
+        const top8 = brandData.slice(0, 8);
+        const ctx2 = document.getElementById('channelMixChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: top8.map(d => d.name.split('/')[1] || d.name),
+                datasets: [
+                    { label: '天猫', data: top8.map(d => (d.tmall / d.total * 100).toFixed(1)), backgroundColor: '#051C2C' },
+                    { label: '抖音', data: top8.map(d => (d.douyin / d.total * 100).toFixed(1)), backgroundColor: '#0077C8' },
+                    { label: '京东', data: top8.map(d => (d.jd / d.total * 100).toFixed(1)), backgroundColor: '#64748B' },
+                    { label: '淘宝', data: top8.map(d => (d.taobao / d.total * 100).toFixed(1)), backgroundColor: '#CBD5E1' }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } },
+                    datalabels: {
+                        color: '#fff',
+                        font: { size: 9 },
+                        formatter: (val) => val > 12 ? Math.round(val) + '%' : ''
+                    }
+                },
+                scales: {
+                    x: { stacked: true, max: 100, ticks: { font: { size: 10 } } },
+                    y: { stacked: true, ticks: { font: { size: 10 } } }
+                }
+            }
+        });
+
+        // 3. Growth Bubble Chart
+        const ctx3 = document.getElementById('growthBubbleChart').getContext('2d');
+        const bubbleData = brandData.map(d => ({
+            x: parseFloat((d.total / 100000000).toFixed(2)),
+            y: parseFloat(((d.total - d.yoy) / d.yoy * 100).toFixed(1)),
+            r: Math.sqrt(d.total) / 1800,
+            name: d.name.split('/')[1] || d.name
+        }));
+
+        new Chart(ctx3, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: '品牌分布',
+                    data: bubbleData,
+                    backgroundColor: (ctx) => ctx.raw?.y >= 0 ? 'rgba(5, 150, 105, 0.6)' : 'rgba(220, 38, 38, 0.6)',
+                    borderColor: (ctx) => ctx.raw?.y >= 0 ? '#059669' : '#DC2626',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        align: 'top',
+                        offset: 4,
+                        font: { size: 9, weight: 'bold' },
+                        formatter: (v) => v.name,
+                        display: true
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'GMV (亿元)', font: { size: 10 } } },
+                    y: { title: { display: true, text: '同比增速 (%)', font: { size: 10 } }, grid: { color: (c) => c.tick.value === 0 ? '#000' : '#f0f0f0' } }
+                }
+            }
+        });
+
+        // Initialize Mermaid
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+        
+        // Date Setup
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+</body>
+</html>
