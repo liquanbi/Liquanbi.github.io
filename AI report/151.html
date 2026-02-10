@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IP 授权与全球化商品战略洞察报告 | 2026.12</title>
+    <!-- Frameworks & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #334155;
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+        }
+        .section-bg-1 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .section-bg-2 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') left bottom/30% no-repeat; }
+        .section-bg-3 { background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80') right bottom/30% no-repeat; }
+        .shadow-soft { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+        .serif { font-family: 'Merriweather', serif; }
+        .bento-card {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 15px -3px rgba(0,0,0,0.07), 0 10px 20px -2px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease-in-out;
+        }
+        .bento-card:hover { transform: translateY(-2px); }
+        .chart-container { position: relative; width: 100%; height: 260px; }
+        .gradient-text {
+            background: linear-gradient(135deg, #0F172A 0%, #2563EB 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .mermaid { background: white; padding: 20px; border-radius: 12px; margin: 20px 0; display: flex; justify-content: center; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased p-4 md:p-10">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <header class="mb-10 flex flex-col md:flex-row justify-between items-end gap-6">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">Confidential</span>
+                    <span class="text-slate-400 text-xs font-mono">Report ID: MK-202612-IP-ANALYST</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tighter text-slate-900 mb-2">全球 IP 联名商品<br/><span class="gradient-text">战略增长分析报告</span></h1>
+                <p class="text-slate-500 font-medium">维度：小黄人 (Minions) 与 名创优品 (MINISO) | 周期：2026年12月</p>
+            </div>
+            <div class="flex flex-col items-end text-right">
+                <div class="flex gap-4 mb-2">
+                    <div class="text-right">
+                        <p class="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Target Regions</p>
+                        <p class="text-sm font-semibold">USA & Southeast Asia</p>
+                    </div>
+                    <div class="text-right border-l border-slate-200 pl-4">
+                        <p class="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Platforms</p>
+                        <p class="text-sm font-semibold">TK, Amazon, Shopee, Lazada</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                    <i class="fas fa-circle text-[6px]"></i> Live Market Intelligence Enabled
+                </div>
+            </div>
+        </header>
+
+        <!-- Executive Summary -->
+        <section class="mb-8">
+            <div class="bento-card p-8 bg-gradient-to-br from-slate-900 to-slate-800 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="serif italic text-2xl mb-4 text-blue-300">"IP 的未来不再是单纯的周边化，而是功能的深度介入。"</h2>
+                    <div class="grid md:grid-cols-3 gap-8 text-slate-300 text-sm leading-relaxed">
+                        <p><strong class="text-white block mb-1">市场结论先行 (TL;DR)</strong> 小黄人 (Minions) 在全球市场已进化为“全品类渗透”的超级 IP。从 2.27 亿美元销售规模的玩具，到 440 万美元单月销售额的 AI 翻译耳机，IP 溢价正从小众收藏向大众功能性产品快速迁移。</p>
+                        <p><strong class="text-white block mb-1">东南亚驱动力</strong> 泰国与越南成为 2026 年底最强劲的增长极。泰国市场通过“智能电子 + IP”实现爆发，而越南则在“传统服饰 (Ao Dai) + IP”和快消美妆领域展现出极高的复购渗透率。</p>
+                        <p><strong class="text-white block mb-1">核心机会点</strong> 价格带呈现双极化：美区聚焦 $100+ 的高端科技联名与收藏盲盒；东南亚则在 $15-$40 的“趣味实用主义”生活用品中存在巨大的授权真空地带。</p>
+                    </div>
+                </div>
+                <i class="fas fa-quote-right absolute bottom-[-1rem] right-4 text-9xl text-white opacity-5"></i>
+            </div>
+        </section>
+
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div class="bento-card p-6">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Max Monthly Revenue (Single SKU)</p>
+                <p class="text-3xl font-mono font-bold text-slate-900">$4.44M</p>
+                <p class="text-xs mt-2 text-emerald-600 font-bold"><i class="fas fa-caret-up"></i> MS105 AI Earbuds (US)</p>
+            </div>
+            <div class="bento-card p-6">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Explosive Growth (MoM)</p>
+                <p class="text-3xl font-mono font-bold text-slate-900">37,600%</p>
+                <p class="text-xs mt-2 text-rose-600 font-bold"><i class="fas fa-bolt"></i> Minions Stitch Series (US)</p>
+            </div>
+            <div class="bento-card p-6">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Avg Price Premium</p>
+                <p class="text-3xl font-mono font-bold text-slate-900">+42.8%</p>
+                <p class="text-xs mt-2 text-slate-500 font-bold">vs. Non-IP Categories</p>
+            </div>
+            <div class="bento-card p-6">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Top Region Capacity</p>
+                <p class="text-3xl font-mono font-bold text-slate-900">SEA Hub</p>
+                <p class="text-xs mt-2 text-blue-600 font-bold">TH & VN High Velocity</p>
+            </div>
+        </div>
+
+        <!-- Main Content Bento Grid -->
+        <main class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <!-- Row 1: Market Space & IP Penetration -->
+            <div class="md:col-span-8 bento-card p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fas fa-chart-pie text-blue-600"></i> IP 品类分布与真实市场空间
+                        </h2>
+                        <p class="text-sm text-slate-500">Analysis of Minions IP across global categories</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-slate-100 rounded text-[10px] font-bold">UNITS SOLD</span>
+                        <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] font-bold">REVENUE SHARE</span>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-lg border-l-4 border-blue-600">
+                            <p class="text-xs font-bold text-blue-700 uppercase mb-1">玩具与收藏 (Toy & Collectibles)</p>
+                            <p class="text-sm text-slate-600">乐高 (LEGO) 与 52TOYS 占据 45% 的高客单价市场。美区单品销额峰值达 227 万美元。</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg border-l-4 border-teal-600">
+                            <p class="text-xs font-bold text-teal-700 uppercase mb-1">智能数码 (Smart Tech)</p>
+                            <p class="text-sm text-slate-600">AI 翻译耳机 (MS105/106) 成为黑马，月销 2.9 万件，证明 IP 在功能性高科技产品中同样具备强溢价。</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg border-l-4 border-amber-600">
+                            <p class="text-xs font-bold text-amber-700 uppercase mb-1">快消与个护 (FMCG)</p>
+                            <p class="text-sm text-slate-600">高露洁 (Colgate) 与 Karisma 在泰印市场以量取胜，月环比增长率均超 300%。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-4 bento-card p-8 bg-slate-900 text-white">
+                <h2 class="text-xl font-bold mb-6">关键洞察：跨界利基</h2>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0">
+                            <i class="fas fa-table-tennis-paddle-ball text-blue-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold">体育 + IP</p>
+                            <p class="text-xs text-slate-400">匹克球拍 (Pickleball) 与网球拍联名在马、菲市场单月贡献 10 万+ 销额，溢价率高达 180%。</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
+                            <i class="fas fa-palette text-emerald-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold">Meme 文化溢价</p>
+                            <p class="text-xs text-slate-400">"Gru Meme" 梗图 T 恤在 TikTok US 实现 378% 爆发。IP 的社交属性转化率远超传统 IP 图案。</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-8 border-t border-slate-800">
+                        <p class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Recommended Action</p>
+                        <p class="text-sm italic">建议在东南亚市场推进“功能实用型”授权（如：具有防晒功能的联名户外装备），以填补高颜值且实用的市场真空。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Performance Comparison & Geographic Strategy -->
+            <div class="md:col-span-4 bento-card p-8">
+                <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-map-location-dot text-rose-600"></i> 市场区域热力
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">美国 (Amazon/TK)</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="bg-slate-900 h-full w-[90%]"></div>
+                            </div>
+                            <span class="text-xs font-mono font-bold">High Tier</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">泰国 (Lazada/TK)</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="bg-blue-600 h-full w-[85%]"></div>
+                            </div>
+                            <span class="text-xs font-mono font-bold">Growth</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">印尼 (Shopee/Lazada)</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="bg-teal-600 h-full w-[75%]"></div>
+                            </div>
+                            <span class="text-xs font-mono font-bold">Mass</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium">越南 (TK/Shopee)</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="bg-amber-500 h-full w-[80%]"></div>
+                            </div>
+                            <span class="text-xs font-mono font-bold">Surge</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 p-4 bg-rose-50 rounded-xl text-rose-800 text-xs leading-relaxed">
+                    <strong>地域策略：</strong> 美国市场应以 $150-$250 的“收藏级+科技型”产品切入；东南亚（泰/越）则应锁定 $15-$45 的“快消生活”产品，注重 TikTok 的病毒式传播。
+                </div>
+            </div>
+
+            <div class="md:col-span-8 bento-card p-8">
+                <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <i class="fas fa-tags text-indigo-600"></i> 建议价格带与 IP 溢价分析
+                </h2>
+                <div class="chart-container">
+                    <canvas id="priceBandChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Row 3: Competitor IP & Summary Table -->
+            <div class="md:col-span-12 bento-card p-8">
+                <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <i class="fas fa-trophy text-amber-500"></i> 核心 IP 联名表现排行榜 (Benchmarking)
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-slate-100 text-slate-400 text-[10px] uppercase font-bold tracking-widest">
+                                <th class="pb-4">IP Series</th>
+                                <th class="pb-4">Top Platform</th>
+                                <th class="pb-4">Core Category</th>
+                                <th class="pb-4 text-right">Avg Price (USD)</th>
+                                <th class="pb-4 text-right">Growth Index</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm font-medium">
+                            <tr class="border-b border-slate-50">
+                                <td class="py-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Minions (小黄人)</td>
+                                <td class="py-4">Amazon / TikTok</td>
+                                <td class="py-4 text-slate-500">Toys / AI Tech / Personal Care</td>
+                                <td class="py-4 text-right font-mono">$85.5</td>
+                                <td class="py-4 text-right text-emerald-600">↑ 1,101%</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Disney (Stitch/Zootopia)</td>
+                                <td class="py-4">Lazada / Shopee</td>
+                                <td class="py-4 text-slate-500">Blind Box / Keychains</td>
+                                <td class="py-4 text-right font-mono">$124.0</td>
+                                <td class="py-4 text-right text-emerald-600">↑ 850%</td>
+                            </tr>
+                            <tr class="border-b border-slate-50">
+                                <td class="py-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span> Sanrio (Kuromi/Cinnamoroll)</td>
+                                <td class="py-4">Shopee / TK</td>
+                                <td class="py-4 text-slate-500">Collectibles / Home</td>
+                                <td class="py-4 text-right font-mono">$42.2</td>
+                                <td class="py-4 text-right text-emerald-600">↑ 3,050%</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Barbie (芭比)</td>
+                                <td class="py-4">TikTok Shop US</td>
+                                <td class="py-4 text-slate-500">Fashion / Earbuds</td>
+                                <td class="py-4 text-right font-mono">$149.8</td>
+                                <td class="py-4 text-right text-emerald-600">↑ 1,140%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- Final Footer / Action Section -->
+        <footer class="mt-12 text-center">
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">Final Strategic Recommendation</p>
+            <div class="inline-block px-10 py-6 bg-slate-900 text-white rounded-2xl shadow-2xl">
+                <h3 class="text-xl font-bold mb-2">优先启动建议：智能家居 + 东南亚联名首发</h3>
+                <p class="text-sm text-slate-400 max-w-2xl mx-auto">基于 2026 年底数据，建议针对印尼与越南市场，以 $25-$35 价格带开发“小黄人联名智能洗护套装”或“具有多语翻译功能的低单价挂件耳机”，利用 TikTok 强爆发力在圣诞节前完成流量收割。</p>
+            </div>
+            <p class="mt-8 text-slate-300 text-[10px]">&copy; 2026 MCKINSEY-HTML-ANALYST | INTERNAL STRATEGY DOCUMENT</p>
+        </footer>
+
+        <!-- Global Footer -->
+        <footer class="mt-12 pt-8 border-t border-slate-300 text-center text-slate-500 text-sm">
+            <p>本报告由 AI 数据分析系统生成 | 项目：IP 联名分析 | 生成日期：<span id="currentDate"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Mermaid Initialization
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+
+        // Set Current Date
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        // Chart.js configuration
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#94a3b8';
+
+        // 1. Category Distribution Chart
+        const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+        new Chart(ctxCategory, {
+            type: 'bar',
+            data: {
+                labels: ['玩具收藏', '智能数码', '个护美妆', '生活百货', '服饰配件'],
+                datasets: [{
+                    label: 'Market Volume Share (%)',
+                    data: [45, 22, 18, 10, 5],
+                    backgroundColor: [
+                        '#0F172A', '#2563EB', '#0F766E', '#D97706', '#94a3b8'
+                    ],
+                    borderRadius: 6,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { borderDash: [4, 4], color: '#f1f5f9' },
+                        ticks: { font: { size: 10 } }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 2. Price Band vs IP Premium Chart
+        const ctxPrice = document.getElementById('priceBandChart').getContext('2d');
+        new Chart(ctxPrice, {
+            type: 'line',
+            data: {
+                labels: ['低价走量', '中端实用', '大众进阶', '高端科技', '顶级收藏'],
+                datasets: [{
+                    label: '建议零售价 (USD)',
+                    data: [15, 45, 85, 220, 650],
+                    borderColor: '#2563EB',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#2563EB',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }, {
+                    label: 'IP 溢价率 (%)',
+                    data: [12, 28, 42, 35, 65],
+                    borderColor: '#0F766E',
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    borderWidth: 2,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'top', align: 'end', labels: { boxWidth: 12, font: { size: 10, weight: 'bold' } } }
+                },
+                scales: {
+                    y: { 
+                        type: 'linear', 
+                        display: true, 
+                        position: 'left',
+                        grid: { color: '#f1f5f9' }
+                    },
+                    y1: { 
+                        type: 'linear', 
+                        display: true, 
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        ticks: { callback: value => value + '%' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
