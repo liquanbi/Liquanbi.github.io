@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -118,19 +117,18 @@
             position: relative;
         }
 
-        .cover-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 48px;
-            background: var(--gradient-gold);
-            border-radius: 50%;
+        .cover-title-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 10px 40px rgba(184, 134, 11, 0.3);
+            gap: 28px;
+            margin-bottom: 16px;
+        }
+
+        .cover-title-row img {
+            height: 52px;
+            width: auto;
+            opacity: 0.85;
         }
 
         .cover-title {
@@ -867,9 +865,67 @@
             border-top: 1px solid var(--border-light);
         }
 
-        .footer-notice-content {
-            max-width: 800px;
-            margin: 0 auto;
+        /* 键盘提示浮窗 */
+        .keyboard-hint {
+            position: fixed;
+            top: 28px;
+            right: 28px;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hint-arrows {
+            display: grid;
+            grid-template-columns: repeat(3, 26px);
+            grid-template-rows: repeat(2, 26px);
+            gap: 3px;
+        }
+
+        .hint-arrows .hint-key {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 5px;
+            font-size: 12px;
+            color: white;
+            font-family: monospace;
+        }
+
+        .hint-arrows .hint-empty {
+            visibility: hidden;
+        }
+
+        .hint-labels {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .hint-label-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.45);
+            white-space: nowrap;
+        }
+
+        .hint-label-row .hl-key {
+            font-family: monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.65);
+        }
         }
 
         .footer-notice-title {
@@ -1029,6 +1085,23 @@
     </style>
 </head>
 <body>
+    <!-- 键盘提示浮窗 -->
+    <div class="keyboard-hint">
+        <div class="hint-arrows">
+            <div class="hint-empty"></div>
+            <div class="hint-key">↑</div>
+            <div class="hint-empty"></div>
+            <div class="hint-key">←</div>
+            <div class="hint-key">↓</div>
+            <div class="hint-key">→</div>
+        </div>
+        <div class="hint-labels">
+            <div class="hint-label-row"><span class="hl-key">← →</span> 切换页面</div>
+            <div class="hint-label-row"><span class="hl-key">↑ ↓</span> 微调滚动</div>
+            <div class="hint-label-row"><span class="hl-key">Esc</span> 关闭弹窗</div>
+        </div>
+    </div>
+
     <!-- 导航 -->
     <nav class="nav">
         <a class="nav-dot active" href="#cover"></a>
@@ -1041,8 +1114,10 @@
 
     <!-- 封面 -->
     <section id="cover" class="cover">
-        <div class="cover-logo">E</div>
-        <h1 class="cover-title">EDRINGTON</h1>
+        <div class="cover-title-row">
+            <img src="logo_white.png" alt="NINT">
+            <h1 class="cover-title">EDRINGTON</h1>
+        </div>
         <p class="cover-subtitle">BI 看板分析框架</p>
         <div class="cover-divider"></div>
         <p style="font-size: 16px; color: rgba(255, 255, 255, 0.6); letter-spacing: 2px;">数据驱动决策 · 品牌保护与市场洞察闭环</p>
@@ -1879,20 +1954,20 @@
                 <div class="report-gallery-title">部分客户报告样例展示（已脱敏）</div>
                 <div class="report-gallery-subtitle">以下为不同行业客户实际交付的 BI 看板截图，数据均已脱敏处理，点击可放大查看完整报表</div>
                 <div class="report-gallery">
-                    <div class="report-thumb" onclick="openReportModal('report1.png')">
-                        <img src="report1.png" alt="报表样例1">
+                    <div class="report-thumb" onclick="openReportModal('report1.jpg')">
+                        <img src="report1.jpg" alt="报表样例1">
                         <div class="report-thumb-overlay"><span>点击放大查看</span></div>
                     </div>
-                    <div class="report-thumb" onclick="openReportModal('report2.png')">
-                        <img src="report2.png" alt="报表样例2">
+                    <div class="report-thumb" onclick="openReportModal('report2.jpg')">
+                        <img src="report2.jpg" alt="报表样例2">
                         <div class="report-thumb-overlay"><span>点击放大查看</span></div>
                     </div>
-                    <div class="report-thumb" onclick="openReportModal('report3.png')">
-                        <img src="report3.png" alt="报表样例3">
+                    <div class="report-thumb" onclick="openReportModal('report3.jpg')">
+                        <img src="report3.jpg" alt="报表样例3">
                         <div class="report-thumb-overlay"><span>点击放大查看</span></div>
                     </div>
-                    <div class="report-thumb" onclick="openReportModal('report4.png')">
-                        <img src="report4.png" alt="报表样例4">
+                    <div class="report-thumb" onclick="openReportModal('report4.jpg')">
+                        <img src="report4.jpg" alt="报表样例4">
                         <div class="report-thumb-overlay"><span>点击放大查看</span></div>
                     </div>
                 </div>
@@ -1954,9 +2029,50 @@
             document.body.style.overflow = '';
         }
 
-        // ESC键关闭模态框
+        // 键盘提示浮窗（始终显示，无需交互逻辑）
+
+        // ESC键关闭模态框 & 键盘导航
+        const sectionIds = ['cover', 'overview', 'module1', 'module2', 'module3', 'summary'];
+        let currentSectionIndex = 0;
+
+        // 跟踪当前所在 section
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    const idx = sectionIds.indexOf(id);
+                    if (idx !== -1) currentSectionIndex = idx;
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+
+        sectionIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) sectionObserver.observe(el);
+        });
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
+            // 模态框打开时只响应 ESC
+            if (document.getElementById('imageModal').classList.contains('active')) {
+                if (e.key === 'Escape') closeModal();
+                return;
+            }
+
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (e.key === 'ArrowLeft' && currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                } else if (e.key === 'ArrowRight' && currentSectionIndex < sectionIds.length - 1) {
+                    currentSectionIndex++;
+                }
+                document.getElementById(sectionIds[currentSectionIndex]).scrollIntoView({ behavior: 'smooth' });
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                window.scrollBy({ top: -120, behavior: 'smooth' });
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                window.scrollBy({ top: 120, behavior: 'smooth' });
+            } else if (e.key === 'Escape') {
                 closeModal();
             }
         });
